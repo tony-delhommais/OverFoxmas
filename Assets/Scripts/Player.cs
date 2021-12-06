@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,10 +14,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float m_HorizontalSpeed = 5f;
 
+    private Stopwatch m_Stopwatch;
+
+    [SerializeField]
+    private GameObject m_BulletInstance;
+    [SerializeField]
+    private float m_BulletSpawnSpeed;
+
 
     private void Awake()
     {
         m_MainCamera = Camera.main;
+
+        m_Stopwatch = Stopwatch.StartNew();
 
     }
 
@@ -73,6 +84,16 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow))
             {
                 transform.position += transform.up * -1 * Time.deltaTime * m_VerticalSpeed;
+            }
+        }
+
+        // TIR
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if(m_Stopwatch.Elapsed.TotalSeconds > m_BulletSpawnSpeed)
+            {
+                Instantiate(m_BulletInstance, transform.position, Quaternion.identity);
+                m_Stopwatch.Restart();
             }
         }
 
