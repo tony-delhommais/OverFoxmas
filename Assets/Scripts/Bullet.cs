@@ -19,6 +19,9 @@ public class Bullet : MonoBehaviour
         UpdateBulletPosition();
     }
 
+    /// <summary>
+    /// Update bullet position
+    /// </summary>
     private void UpdateBulletPosition()
     {
         transform.position += transform.up * m_BulletSpeed * Time.deltaTime;

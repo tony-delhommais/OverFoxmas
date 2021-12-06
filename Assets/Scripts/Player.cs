@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Control player input
     /// </summary>
     private void PlayerControl()
     {
