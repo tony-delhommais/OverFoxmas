@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
+public class Enemy : Entity
 {
     [SerializeField]
     private float m_EnemySpeed = 2f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -31,5 +28,22 @@ public class Enemy : MonoBehaviour
        {
             Destroy(gameObject);
        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            Destroy(gameObject);
+        }
+        if(collision.gameObject.tag == "Bullet")
+        {
+            m_CurrentPV -= 10;
+
+            if (m_CurrentPV <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
