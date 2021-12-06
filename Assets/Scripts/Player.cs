@@ -4,7 +4,11 @@ using System.Diagnostics;
 
 using UnityEngine;
 
-public class Player : MonoBehaviour
+delegate void OnHit();
+
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
+public class Player : Entity
 {
 
     private Camera m_MainCamera;
@@ -17,23 +21,18 @@ public class Player : MonoBehaviour
     private Stopwatch m_Stopwatch;
 
     [SerializeField]
-    private GameObject m_BulletInstance;
+    private GameObject m_BulletInstance = null;
     [SerializeField]
-    private float m_BulletSpawnSpeed;
+    private float m_BulletSpawnSpeed = 1f;
 
+    private int m_Score = 0;
 
-    private void Awake()
+    override protected void Awake()
     {
+        base.Awake();
         m_MainCamera = Camera.main;
 
         m_Stopwatch = Stopwatch.StartNew();
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -92,10 +91,34 @@ public class Player : MonoBehaviour
         {
             if(m_Stopwatch.Elapsed.TotalSeconds > m_BulletSpawnSpeed)
             {
-                Instantiate(m_BulletInstance, transform.position, Quaternion.identity);
+                Vector3 SpawnPoint = transform.position;
+                SpawnPoint.y += 0.7f;
+                GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
+
+                newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+
                 m_Stopwatch.Restart();
             }
         }
+    }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Enemy")
+        {
+            m_CurrentPV -= 5;
+
+            if (m_CurrentPV <= 0)
+            {
+                print($"Game Over! Score: {m_Score}");
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    private void OnBulletHit()
+    {
+        m_Score += 5;
+        print($"Score: {m_Score}");
     }
 }

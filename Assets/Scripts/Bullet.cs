@@ -1,17 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.Events;
+
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField]
     private float m_BulletSpeed = 2f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public event Action OnHit;
 
     // Update is called once per frame
     void Update()
@@ -30,6 +32,15 @@ public class Bullet : MonoBehaviour
 
         if(BulletPosOnScreen.y > Screen.height)
         {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            OnHit();
             Destroy(gameObject);
         }
     }
