@@ -26,24 +26,34 @@ public class Enemy : Entity
 
        if (EnemyPosOnScreen.y < 0)
        {
-            Destroy(gameObject);
-       }
+            DestroySelf();
+        }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            DestroySelf();
         }
-        if(collider.CompareTag("Bullet"))
+        if (collider.CompareTag("Bullet"))
         {
             m_CurrentPV -= 10;
 
             if (m_CurrentPV <= 0)
             {
-                Destroy(gameObject);
+                DestroySelf();
             }
         }
+        if (collider.CompareTag("Enemy"))
+        {
+            DestroySelf();
+        }
+    }
+
+    private void DestroySelf()
+    {
+        EnemiesManager.Current.DecreaseEnemyCount();
+        Destroy(gameObject);
     }
 }
