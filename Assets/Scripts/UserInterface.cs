@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class UserInterface : MonoBehaviour
 {
+    public static UserInterface Current;
+
     [SerializeField]
-    private GameObject m_GameOver = null;
+    private Text m_GameOver = null;
 
     [SerializeField]
     private Button m_PlayAgain = null ;
@@ -22,9 +24,16 @@ public class UserInterface : MonoBehaviour
 
     private Player m_Player = null;
 
+    [SerializeField]
+    private GameObject m_PanelPause = null;
+
+    
+
 
     private void Awake()
     {
+        Current = this;
+
         m_Player = m_fox?.GetComponent<Player>();
 
         //abonnement Netflix
@@ -42,6 +51,7 @@ public class UserInterface : MonoBehaviour
         //Ne pas afficher lors du jeu
         m_GameOver.gameObject.SetActive(false);
         m_PlayAgain.gameObject.SetActive(false);
+        m_PanelPause.SetActive(false);
     }
 
     // Update is called once per frame
@@ -65,5 +75,10 @@ public class UserInterface : MonoBehaviour
     private void OnScoreChange()
     {
         m_Score.text = "Score :" + m_Player.GetScore();
+    }
+
+    public void SetPausePanel (bool pause)
+    {
+        m_PanelPause.SetActive(pause);
     }
 }

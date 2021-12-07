@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManagerr : MonoBehaviour
 {
     public static GameManagerr Current;
+    private bool m_pause = false;
 
     private void Awake()
     {
@@ -28,4 +29,22 @@ public class GameManagerr : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    public bool GetPause()
+    {
+        return m_pause;
+    }
+    public void TogglePlayPause()
+    {
+        m_pause = !m_pause;
+        UserInterface.Current.SetPausePanel(m_pause);
+        if (m_pause)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
 }
