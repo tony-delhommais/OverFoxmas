@@ -23,7 +23,8 @@ public class Player : Entity
     [SerializeField]
     private GameObject m_BulletInstance = null;
     [SerializeField]
-    private float m_BulletSpawnSpeed = 1f;
+    [Min(1)]
+    private int m_BulletSpawnSpeed = 1;
 
     private int m_Score = 0;
 
@@ -89,7 +90,7 @@ public class Player : Entity
         // TIR
         if (Input.GetKey(KeyCode.Space))
         {
-            if(m_Stopwatch.Elapsed.TotalSeconds > m_BulletSpawnSpeed)
+            if(m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
             {
                 Vector3 SpawnPoint = transform.position;
                 SpawnPoint.y += 0.7f;
@@ -102,9 +103,9 @@ public class Player : Entity
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if(collision.gameObject.tag == "Enemy")
+        if(collider.CompareTag("Enemy"))
         {
             m_CurrentPV -= 5;
 
