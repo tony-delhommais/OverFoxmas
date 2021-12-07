@@ -30,13 +30,13 @@ public class Enemy : Entity
        }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collider.CompareTag("Player"))
         {
             Destroy(gameObject);
         }
-        if(collision.gameObject.tag == "Bullet")
+        if(collider.CompareTag("Bullet"))
         {
             m_CurrentPV -= 10;
 

@@ -36,9 +36,9 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collider.CompareTag("Enemy"))
         {
             OnHit();
             Destroy(gameObject);

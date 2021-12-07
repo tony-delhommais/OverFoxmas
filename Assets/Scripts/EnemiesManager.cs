@@ -8,7 +8,8 @@ public class EnemiesManager : MonoBehaviour
     [SerializeField]
     private GameObject m_EnemyInstance;
     [SerializeField]
-    private float m_EnemySpawnSpeed;
+    [Min(0.1f)]
+    private float m_EnemySpawnSpeed = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,7 @@ public class EnemiesManager : MonoBehaviour
             Vector3 newPos = Camera.main.ScreenToWorldPoint(new Vector3 (RandomPosX, Screen.height, Camera.main.nearClipPlane));
             newPos.z = 0;
             Instantiate(m_EnemyInstance, newPos, Quaternion.identity);
-            yield return new WaitForSeconds(m_EnemySpawnSpeed);
+            yield return new WaitForSeconds(1.0f / (float)m_EnemySpawnSpeed);
         }
     }
        
