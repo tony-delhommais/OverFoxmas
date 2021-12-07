@@ -14,8 +14,13 @@ public class Entity : MonoBehaviour
         m_CurrentPV = m_MaxPV;
     }
 
-    int GetCurrentPV()
+    public int GetCurrentPV()
     {
         return m_CurrentPV;
+    }
+
+    public int GetMaxPV()
+    {
+        return m_MaxPV;
     }
 }
