@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 using UnityEngine;
 
 delegate void OnHit();
@@ -10,7 +10,6 @@ delegate void OnHit();
 [RequireComponent(typeof(Collider))]
 public class Player : Entity
 {
-
     private Camera m_MainCamera;
 
     [SerializeField]
@@ -28,6 +27,9 @@ public class Player : Entity
 
     private int m_Score = 0;
 
+    public event Action OnHPChange;
+    public event Action OnScoreChange;
+
     override protected void Awake()
     {
         base.Awake();
@@ -35,6 +37,7 @@ public class Player : Entity
 
         m_Stopwatch = Stopwatch.StartNew();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -96,6 +99,7 @@ public class Player : Entity
                 SpawnPoint.y += 0.7f;
                 GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
 
+                //abonnement Being Sport
                 newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
 
                 m_Stopwatch.Restart();
@@ -108,6 +112,7 @@ public class Player : Entity
         if(collider.CompareTag("Enemy"))
         {
             m_CurrentPV -= 5;
+            OnHPChange();
 
             if (m_CurrentPV <= 0)
             {
@@ -121,5 +126,11 @@ public class Player : Entity
     {
         m_Score += 5;
         print($"Score: {m_Score}");
+        OnScoreChange();
+    }
+
+    public int GetScore()
+    {
+        return m_Score;
     }
 }
