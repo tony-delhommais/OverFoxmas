@@ -50,60 +50,68 @@ public class Player : Entity
     /// </summary>
     private void PlayerControl()
     {
+        if (!GameManagerr.Current.GetPause())
+        { 
+            Vector3 PlayerPosOnScreen = m_MainCamera.WorldToScreenPoint(transform.position);
 
-       Vector3 PlayerPosOnScreen = m_MainCamera.WorldToScreenPoint(transform.position);
 
-
-        //RIGHT
-        if (PlayerPosOnScreen.x < Screen.width)
-        {  
-            if (Input.GetKey(KeyCode.RightArrow))
+            //RIGHT
+            if (PlayerPosOnScreen.x < Screen.width)
             {
-                transform.position += transform.right * Time.deltaTime * m_HorizontalSpeed;
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    transform.position += transform.right * Time.deltaTime * m_HorizontalSpeed;
+                }
+            }
+
+            //LEFT
+            if (PlayerPosOnScreen.x > 0)
+            {
+                if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    transform.position += transform.right * -1 * Time.deltaTime * m_HorizontalSpeed;
+                }
+            }
+
+            //UP
+            if (PlayerPosOnScreen.y < Screen.height)
+            {
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    transform.position += transform.up * Time.deltaTime * m_VerticalSpeed;
+                }
+            }
+
+            //DOWN
+            if (PlayerPosOnScreen.y > 0)
+            {
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    transform.position += transform.up * -1 * Time.deltaTime * m_VerticalSpeed;
+                }
+            }
+
+            // TIR
+            if (Input.GetKey(KeyCode.Space))
+            {
+                if (m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
+                {
+                    Vector3 SpawnPoint = transform.position;
+                    SpawnPoint.y += 0.7f;
+                    GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
+
+                    //abonnement Being Sport
+                    newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+
+                    m_Stopwatch.Restart();
+                }
             }
         }
 
-        //LEFT
-        if (PlayerPosOnScreen.x > 0)
+        //PAUSE
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                transform.position += transform.right * -1 * Time.deltaTime * m_HorizontalSpeed;
-            }
-        }
-
-        //UP
-        if (PlayerPosOnScreen.y < Screen.height)
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                transform.position += transform.up * Time.deltaTime * m_VerticalSpeed;
-            }
-        }
-
-        //DOWN
-        if (PlayerPosOnScreen.y > 0)
-        {
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                transform.position += transform.up * -1 * Time.deltaTime * m_VerticalSpeed;
-            }
-        }
-
-        // TIR
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if(m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
-            {
-                Vector3 SpawnPoint = transform.position;
-                SpawnPoint.y += 0.7f;
-                GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
-
-                //abonnement Being Sport
-                newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
-
-                m_Stopwatch.Restart();
-            }
+            GameManagerr.Current.TogglePlayPause();
         }
     }
 
