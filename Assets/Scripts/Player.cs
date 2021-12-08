@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-delegate void OnHit();
-
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
 public class Player : Entity
 {
     private Camera m_MainCamera;
@@ -97,7 +93,6 @@ public class Player : Entity
                 if (m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
                 {
                     Vector3 SpawnPoint = transform.position;
-                    SpawnPoint.y += 0.7f;
                     GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
 
                     //abonnement Being Sport
@@ -119,26 +114,45 @@ public class Player : Entity
     {
         if(collider.CompareTag("Enemy"))
         {
-            m_CurrentPV -= 5;
-            OnHPChange();
+            DecreaseHP(5);
+        }
 
-            if (m_CurrentPV <= 0)
-            {
-                print($"Game Over! Score: {m_Score}");
-                Destroy(gameObject);
-            }
+        if (collider.CompareTag("EnemyBullet"))
+        {
+            DecreaseHP(10);
         }
     }
 
-    private void OnBulletHit()
+    private void OnBulletHit(int p_incScore)
     {
-        m_Score += 5;
-        print($"Score: {m_Score}");
+        m_Score += p_incScore;
+        
         OnScoreChange();
+    }
+
+    private void DecreaseHP(int p_hp)
+    {
+        m_CurrentPV -= p_hp;
+        OnHPChange();
+
+        if (m_CurrentPV <= 0)
+        {
+            Dispawn();
+        }
     }
 
     public int GetScore()
     {
         return m_Score;
+    }
+
+    public override void Spawn()
+    {
+        print("Spawn Player");
+    }
+
+    public override void Dispawn()
+    {
+        base.Dispawn();
     }
 }
