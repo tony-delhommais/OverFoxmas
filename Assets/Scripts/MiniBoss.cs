@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MiniBoss : Entity
 {
+    [SerializeField]
+    private GameObject m_BonusPrefab = null;
+
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Bullet"))
@@ -27,6 +30,8 @@ public class MiniBoss : Entity
     public override void Dispawn()
     {
         EnemiesManager.Current.MiniBossDead();
+
+        if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
 
         base.Dispawn();
     }

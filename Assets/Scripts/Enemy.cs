@@ -31,6 +31,11 @@ public class Enemy : Entity
     
     private float m_RotationAngle = 0.0f;
 
+    [SerializeField]
+    private GameObject m_BonusPrefab = null;
+
+    private bool m_SpawnBonus = false;
+
     override protected void Awake()
     {
         base.Awake();
@@ -121,6 +126,11 @@ public class Enemy : Entity
     {
         EnemiesManager.Current.DecreaseEnemyCount();
 
+        if(m_SpawnBonus)
+        {
+            if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+        }
+
         base.Dispawn();
     }
 
@@ -147,5 +157,10 @@ public class Enemy : Entity
     public void SetRotationAngle(float p_RotationAngle)
     {
         m_RotationAngle = p_RotationAngle;
+    }
+
+    public void SetSpawnBonus(bool p_SpawnBonus)
+    {
+        m_SpawnBonus = p_SpawnBonus;
     }
 }

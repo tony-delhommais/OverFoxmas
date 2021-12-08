@@ -126,3 +126,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MaxPV: 50
+  m_BonusPrefab: {fileID: 3077491259520597543, guid: 447f5e6619a0b2a499a878b7f2e63363, type: 3}
