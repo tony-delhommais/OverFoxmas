@@ -8,12 +8,6 @@ public class UserInterface : MonoBehaviour
     public static UserInterface Current;
 
     [SerializeField]
-    private Text m_GameOver = null;
-
-    [SerializeField]
-    private Button m_PlayAgain = null ;
-
-    [SerializeField]
     private Text m_Score = null;
 
     [SerializeField]
@@ -25,9 +19,20 @@ public class UserInterface : MonoBehaviour
     private Player m_Player = null;
 
     [SerializeField]
-    private GameObject m_PanelPause = null;
+    private GameObject m_Pause = null;
 
-    
+    [SerializeField]
+    private GameObject m_End = null;
+
+    [SerializeField]
+    private Text m_HightScore = null;
+
+    [SerializeField]
+    private GameObject m_PanelEndWin = null;
+
+    [SerializeField]
+    private GameObject m_PanelEndLose = null;
+
 
 
     private void Awake()
@@ -46,12 +51,14 @@ public class UserInterface : MonoBehaviour
     {
         m_Slider_PV.maxValue = m_Player.GetMaxPV();
         m_Slider_PV.value = m_Player.GetCurrentPV();
-        m_Score.text = "Score :" + m_Player.GetScore();
+        m_Score.text = "Score : " + m_Player.GetScore();
 
         //Ne pas afficher lors du jeu
-        m_GameOver.gameObject.SetActive(false);
-        m_PlayAgain.gameObject.SetActive(false);
-        m_PanelPause.SetActive(false);
+        m_End.SetActive(false);
+        m_Pause.SetActive(false);
+        m_HightScore.gameObject.SetActive(false);
+        m_PanelEndWin.SetActive(false);
+        m_PanelEndLose.SetActive(false);
     }
 
     // Update is called once per frame
@@ -63,22 +70,31 @@ public class UserInterface : MonoBehaviour
     private void OnHPChange()
     {
         m_Slider_PV.value = m_Player.GetCurrentPV();
-
-        if (m_Player.GetCurrentPV() <= 0)
-        {
-            m_GameOver.gameObject.SetActive(true);
-            m_PlayAgain.gameObject.SetActive(true);
-        }
-        
     }
 
     private void OnScoreChange()
     {
-        m_Score.text = "Score :" + m_Player.GetScore();
+        m_Score.text = "Score : " + m_Player.GetScore();
     }
 
-    public void SetPausePanel (bool pause)
+    public void SetPausePanel(bool pause)
     {
-        m_PanelPause.SetActive(pause);
+        m_Pause.SetActive(pause);
+    }
+
+    public void OnGameEnd(bool win)
+    {
+        if (win == true)
+        {
+            m_PanelEndWin.SetActive(true);
+        }
+        else
+        {
+            m_PanelEndLose.SetActive(true);
+        }
+
+        m_End.SetActive(true);
+        m_HightScore.gameObject.SetActive(true);
+        m_HightScore.text = "Hight score : " + SaveData.Current.GetHightScore();
     }
 }
