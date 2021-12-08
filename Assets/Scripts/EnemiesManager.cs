@@ -60,6 +60,7 @@ public class EnemiesManager : MonoBehaviour
     [SerializeField]
     private GameObject m_BossInstance = null;
 
+    [SerializeField]
     private int m_EnemyCount = 0;
     private float m_Ratio = 0.1f;
 
@@ -88,6 +89,9 @@ public class EnemiesManager : MonoBehaviour
     {
         while (Application.isPlaying)
         {
+            if (m_CurrentWaveAttackerTypePose == m_WaveAttackStruct.Length)
+                break;
+
             yield return new WaitForSeconds(m_TimeBetweenWaves);
 
             bool BreakForBoss = false;
@@ -112,7 +116,7 @@ public class EnemiesManager : MonoBehaviour
 
             m_CurrentWaveAttackerTypePose++;
 
-            if (m_CurrentWaveAttackerTypePose == m_WaveAttackStruct.Length || BreakForBoss)
+            if (BreakForBoss)
                 break;
         }
     }
@@ -136,15 +140,31 @@ public class EnemiesManager : MonoBehaviour
 
         Vector3 shapePos = RandomScreenPos(WaveShape.m_MinSpawnOffset, WaveShape.m_MaxSpawnOffset);
 
+        bool bonus = Random.Range(0f, 1f) < 0.5;
+        int bonusPos = -1;
+
+        if(bonus)
+        {
+            bonusPos = Random.Range(0, WaveShape.m_EnemyWaveItems.Length);
+        }
+
+        int pos = 0;
         foreach (EnemyWaveShapeItem WaveShapeItem in WaveShape.m_EnemyWaveItems)
         {
             if (WaveShapeItem.m_EnemyInstance)
             {
                 Vector3 itemPose = shapePos + new Vector3(WaveShapeItem.m_RelativePosition.x, WaveShapeItem.m_RelativePosition.y, 0.0f);
-                Instantiate(WaveShapeItem.m_EnemyInstance, itemPose, Quaternion.identity);
+                GameObject enemy = Instantiate(WaveShapeItem.m_EnemyInstance, itemPose, Quaternion.identity);
+
+                if(bonusPos == pos)
+                {
+                    enemy.GetComponent<Enemy>().SetSpawnBonus(true);
+                }
 
                 m_EnemyCount++;
             }
+
+            pos++;
         }
     }
 

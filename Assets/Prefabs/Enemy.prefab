@@ -111,6 +111,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MaxPV: 20
   m_EnemySpeed: 0.5
+  m_MovmentType: 0
+  m_RotationRadius: 1
+  m_RotationClockwise: 1
+  m_BonusPrefab: {fileID: 3077491259520597543, guid: 447f5e6619a0b2a499a878b7f2e63363, type: 3}
 --- !u!54 &2834940353504801595
 Rigidbody:
   m_ObjectHideFlags: 0
