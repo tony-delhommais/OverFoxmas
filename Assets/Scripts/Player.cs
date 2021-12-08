@@ -165,6 +165,9 @@ public class Player : Entity
                     if (bonus.m_BonusValue > m_BulletSpawnSpeed)
                         m_BulletSpawnSpeed = bonus.m_BonusValue;
                     break;
+                case BonusType.Points:
+                    m_Score += bonus.m_BonusValue;
+                    break;
             }
         }
     }
@@ -192,6 +195,7 @@ public class Player : Entity
 
             if (m_CurrentPV <= 0)
             {
+                GameManagerr.Current.EndGame(false);
                 Dispawn();
             }
         }
