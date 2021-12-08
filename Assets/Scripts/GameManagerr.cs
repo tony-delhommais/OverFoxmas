@@ -71,6 +71,8 @@ public class GameManagerr : MonoBehaviour
     /// <param name="win">Define if the game is won or lost</param>
     public void EndGame(bool win)
     {
+        if (win && m_Player) m_Player.GameFinished();
+
         //Set the hight score
         if (m_Player.GetScore() > SaveData.Current.GetHightScore())
         {
