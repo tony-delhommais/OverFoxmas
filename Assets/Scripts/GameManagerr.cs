@@ -56,10 +56,13 @@ public class GameManagerr : MonoBehaviour
         }
     }
 
-    public void ExitGame()
+    public void ExitGame(string p_SceneName)
     {
-        SceneManager.LoadScene("dev-celine-menu");
-        Time.timeScale = 1f;
+        if (p_SceneName.Length != 0)
+        {
+            SceneManager.LoadScene(p_SceneName);
+            Time.timeScale = 1f;
+        }
     }
 
     /// <summary>
