@@ -56,4 +56,9 @@ public class GameManagerStart : MonoBehaviour
         m_Menu.SetActive(false);
         m_Credit.SetActive(true);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
