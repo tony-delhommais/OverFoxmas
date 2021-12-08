@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dev/dev-celine.unity
     guid: 87cdc547fc045aa4db4de195e524695c
+  - enabled: 1
+    path: Assets/Scenes/MenuPrincipal.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: 18a420d55c4ca1b49b693f0985d1b976
   m_configObjects: {}
