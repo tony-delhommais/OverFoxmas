@@ -4,10 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-delegate void OnHit();
-
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
 public class Player : Entity
 {
     private Camera m_MainCamera;
@@ -140,5 +136,10 @@ public class Player : Entity
     public int GetScore()
     {
         return m_Score;
+    }
+
+    public override void Spawn()
+    {
+        print("Spawn Player");
     }
 }

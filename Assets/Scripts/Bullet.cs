@@ -43,5 +43,11 @@ public class Bullet : MonoBehaviour
             OnHit();
             Destroy(gameObject);
         }
+
+        if (collider.CompareTag("Boss"))
+        {
+            OnHit();
+            Destroy(gameObject);
+        }
     }
 }

@@ -36,17 +36,23 @@ public class EnemiesManager : MonoBehaviour
     [SerializeField]
     private int m_TimeBetweenWaves = 30;
 
+    [Space]
+
     private int m_CurrentWaveAttackerTypePose = 0;
 
     [SerializeField]
     private EnemyWaveShape[] m_WavesShapes;
 
+    [Space]
+
     [SerializeField]
     private GameObject[] m_EnemyInstance;
 
     [SerializeField]
-    [Min(0.1f)]
-    private float m_EnemySpawnSpeed = 1.0f;
+    private GameObject m_MiniBossInstance = null;
+
+    [SerializeField]
+    private GameObject m_BossInstance = null;
 
     private int m_EnemyCount = 0;
     private float m_Ratio = 0.1f;
@@ -87,11 +93,11 @@ public class EnemiesManager : MonoBehaviour
             }
             else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MiniBoss)
             {
-                // TODO
+                SpawnMiniBoss();
             }
             else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.Boss)
             {
-                // TODO
+                SpawnBoss();
             }
 
             m_CurrentWaveAttackerTypePose++;
@@ -103,11 +109,14 @@ public class EnemiesManager : MonoBehaviour
     
     private void SpawnRandomSingleEnemy()
     {
-        Vector3 newPos = RandomScreenPos();
+        if (m_EnemyInstance[0])
+        {
+            Vector3 newPos = RandomScreenPos();
 
-        Instantiate(m_EnemyInstance[0], newPos, Quaternion.identity);
+            Instantiate(m_EnemyInstance[0], newPos, Quaternion.identity);
 
-        m_EnemyCount++;
+            m_EnemyCount++;
+        }
     }
 
     private void SpawnRandomWaveStructure()
@@ -119,10 +128,13 @@ public class EnemiesManager : MonoBehaviour
 
         foreach (EnemyWaveShapeItem WaveShapeItem in WaveShape.m_EnemyWaveItems)
         {
-            Vector3 itemPose = shapePos + new Vector3(WaveShapeItem.m_RelativePosition.x, WaveShapeItem.m_RelativePosition.y, 0.0f);
-            Instantiate(WaveShapeItem.m_EnemyInstance, itemPose, Quaternion.identity);
+            if (WaveShapeItem.m_EnemyInstance)
+            {
+                Vector3 itemPose = shapePos + new Vector3(WaveShapeItem.m_RelativePosition.x, WaveShapeItem.m_RelativePosition.y, 0.0f);
+                Instantiate(WaveShapeItem.m_EnemyInstance, itemPose, Quaternion.identity);
 
-            m_EnemyCount++;
+                m_EnemyCount++;
+            }
         }
     }
 
@@ -144,5 +156,43 @@ public class EnemiesManager : MonoBehaviour
     public void DecreaseEnemyCount()
     {
         m_EnemyCount--;
+    }
+
+    private void SpawnMiniBoss()
+    {
+        Vector3 SpawnPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height * 0.95f, Camera.main.nearClipPlane));
+        SpawnPos.z = 0;
+
+        GameObject miniboss = null;
+
+        if (m_MiniBossInstance)
+        {
+            miniboss = Instantiate(m_MiniBossInstance, SpawnPos, Quaternion.identity);
+        }
+
+        if (miniboss && m_EnemyInstance[0])
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 newPos = RandomScreenPos();
+
+                GameObject NewEnemy = Instantiate(m_EnemyInstance[0], SpawnPos, Quaternion.identity);
+                NewEnemy.transform.SetParent(miniboss.transform);
+
+                Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
+
+                NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
+                NewEnemyScript.SetEnemySpeed(1.0f);
+                NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
+                NewEnemyScript.SetRotationRadius(2.0f);
+
+                m_EnemyCount++;
+            }
+        }
+    }
+
+    private void SpawnBoss()
+    {
+        // TODO
     }
 }

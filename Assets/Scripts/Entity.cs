@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
+
+public abstract class Entity : MonoBehaviour
 {
     [SerializeField]
     protected int m_MaxPV = 50;
@@ -14,6 +17,11 @@ public class Entity : MonoBehaviour
         m_CurrentPV = m_MaxPV;
     }
 
+    private void Start()
+    {
+        Spawn();
+    }
+
     public int GetCurrentPV()
     {
         return m_CurrentPV;
@@ -23,4 +31,6 @@ public class Entity : MonoBehaviour
     {
         return m_MaxPV;
     }
+
+    abstract public void Spawn();
 }
