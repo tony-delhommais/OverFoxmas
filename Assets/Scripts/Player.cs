@@ -93,7 +93,6 @@ public class Player : Entity
                 if (m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
                 {
                     Vector3 SpawnPoint = transform.position;
-                    SpawnPoint.y += 0.7f;
                     GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
 
                     //abonnement Being Sport
@@ -115,13 +114,12 @@ public class Player : Entity
     {
         if(collider.CompareTag("Enemy"))
         {
-            m_CurrentPV -= 5;
-            OnHPChange();
+            DecreaseHP(5);
+        }
 
-            if (m_CurrentPV <= 0)
-            {
-                Dispawn();
-            }
+        if (collider.CompareTag("EnemyBullet"))
+        {
+            DecreaseHP(10);
         }
     }
 
@@ -130,6 +128,17 @@ public class Player : Entity
         m_Score += p_incScore;
         
         OnScoreChange();
+    }
+
+    private void DecreaseHP(int p_hp)
+    {
+        m_CurrentPV -= p_hp;
+        OnHPChange();
+
+        if (m_CurrentPV <= 0)
+        {
+            Dispawn();
+        }
     }
 
     public int GetScore()

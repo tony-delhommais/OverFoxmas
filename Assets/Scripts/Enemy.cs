@@ -16,7 +16,7 @@ public class Enemy : Entity
     private Vector3 m_OriginalPos;
 
     [SerializeField]
-    private float m_EnemySpeed = 2f;
+    private float m_EnemySpeed = 1f;
 
     [SerializeField]
     private EnemyMovmentType m_MovmentType = EnemyMovmentType.TopDown;
@@ -39,7 +39,7 @@ public class Enemy : Entity
     }
 
     // Update is called once per frame
-    void Update()
+    virtual protected void Update()
     {
         UpdateEnemyPosition();
     }

@@ -46,7 +46,13 @@ public class EnemiesManager : MonoBehaviour
     [Space]
 
     [SerializeField]
-    private GameObject[] m_EnemyInstance;
+    private GameObject m_EnemyInstance = null;
+
+    [SerializeField]
+    private GameObject m_KillerEnemyInstance = null;
+
+    [SerializeField]
+    private GameObject m_KillerPowerEnemyInstance = null;
 
     [SerializeField]
     private GameObject m_MiniBossInstance = null;
@@ -113,11 +119,11 @@ public class EnemiesManager : MonoBehaviour
     
     private void SpawnRandomSingleEnemy()
     {
-        if (m_EnemyInstance[0])
+        if (m_EnemyInstance)
         {
             Vector3 newPos = RandomScreenPos();
 
-            Instantiate(m_EnemyInstance[0], newPos, Quaternion.identity);
+            Instantiate(m_EnemyInstance, newPos, Quaternion.identity);
 
             m_EnemyCount++;
         }
@@ -174,14 +180,14 @@ public class EnemiesManager : MonoBehaviour
             miniboss = Instantiate(m_MiniBossInstance, SpawnPos, Quaternion.identity);
         }
 
-        if (miniboss && m_EnemyInstance[0])
+        if (miniboss && m_EnemyInstance && m_KillerEnemyInstance)
         {
             for (int i = 0; i < 4; i++)
             {
                 Vector3 newPos = RandomScreenPos();
 
-                GameObject NewEnemy = Instantiate(m_EnemyInstance[0], SpawnPos, Quaternion.identity);
-                NewEnemy.transform.SetParent(miniboss.transform);
+                GameObject NewEnemy = Instantiate((i % 2 == 0 ? m_KillerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
+                //NewEnemy.transform.SetParent(miniboss.transform);
 
                 Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
 
@@ -212,14 +218,14 @@ public class EnemiesManager : MonoBehaviour
             boss = Instantiate(m_BossInstance, SpawnPos, Quaternion.identity);
         }
 
-        if (boss && m_EnemyInstance[0])
+        if (boss && m_EnemyInstance && m_KillerPowerEnemyInstance)
         {
             for (int i = 0; i < 4; i++)
             {
                 Vector3 newPos = RandomScreenPos();
 
-                GameObject NewEnemy = Instantiate(m_EnemyInstance[0], SpawnPos, Quaternion.identity);
-                NewEnemy.transform.SetParent(boss.transform);
+                GameObject NewEnemy = Instantiate((i % 2 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
+                //NewEnemy.transform.SetParent(boss.transform);
 
                 Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
 
@@ -235,8 +241,8 @@ public class EnemiesManager : MonoBehaviour
             {
                 Vector3 newPos = RandomScreenPos();
 
-                GameObject NewEnemy = Instantiate(m_EnemyInstance[0], SpawnPos, Quaternion.identity);
-                NewEnemy.transform.SetParent(boss.transform);
+                GameObject NewEnemy = Instantiate((i % 4 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
+                //NewEnemy.transform.SetParent(boss.transform);
 
                 Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
 

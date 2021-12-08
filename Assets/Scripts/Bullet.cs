@@ -47,6 +47,11 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (collider.CompareTag("EnemyBullet"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void EnemyHitIsDead(int p_incScore)
