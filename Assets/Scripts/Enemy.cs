@@ -22,11 +22,9 @@ public class Enemy : Entity
     private EnemyMovmentType m_MovmentType = EnemyMovmentType.TopDown;
 
     [SerializeField]
-    [ShowIf("m_MovmentType", EnemyMovmentType.Circular)]
     private float m_RotationRadius = 1.0f;
 
     [SerializeField]
-    [ShowIf("m_MovmentType", EnemyMovmentType.Circular)]
     private bool m_RotationClockwise = true;
     
     private float m_RotationAngle = 0.0f;

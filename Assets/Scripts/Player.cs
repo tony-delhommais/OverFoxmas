@@ -27,6 +27,8 @@ public class Player : Entity
 
     private int m_MultiShootValue = 1;
 
+    private bool m_CanWinPoints = true;
+
     public event Action OnHPChange;
     public event Action OnScoreChange;
 
@@ -181,9 +183,12 @@ public class Player : Entity
 
     private void OnBulletHit(int p_incScore)
     {
-        m_Score += p_incScore;
-        
-        OnScoreChange();
+        if (m_CanWinPoints)
+        {
+            m_Score += p_incScore;
+
+            OnScoreChange();
+        }
     }
 
     private void DecreaseHP(int p_hp)
@@ -211,6 +216,12 @@ public class Player : Entity
     public int GetScore()
     {
         return m_Score;
+    }
+
+    public void GameFinished()
+    {
+        m_HaveShield = true;
+        m_CanWinPoints = false;
     }
 
     public override void Spawn()
