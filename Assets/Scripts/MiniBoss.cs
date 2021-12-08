@@ -17,7 +17,9 @@ public class MiniBoss : Entity
 
             if (m_CurrentPV <= 0)
             {
-                Destroy(gameObject);
+                collider.GetComponent<Bullet>().EnemyHitIsDead(20);
+
+                Dispawn();
             }
         }
     }
@@ -25,5 +27,12 @@ public class MiniBoss : Entity
     public override void Spawn()
     {
         print("Spawn MiniBoss");
+    }
+
+    public override void Dispawn()
+    {
+        EnemiesManager.Current.MiniBossDead();
+
+        base.Dispawn();
     }
 }

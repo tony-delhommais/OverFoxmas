@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private float m_BulletSpeed = 2f;
 
-    public event Action OnHit;
+    public event Action<int> OnHit;
 
     // Update is called once per frame
     void Update()
@@ -40,14 +40,17 @@ public class Bullet : MonoBehaviour
     {
         if (collider.CompareTag("Enemy"))
         {
-            OnHit();
             Destroy(gameObject);
         }
 
         if (collider.CompareTag("Boss"))
         {
-            OnHit();
             Destroy(gameObject);
         }
+    }
+
+    public void EnemyHitIsDead(int p_incScore)
+    {
+        OnHit(p_incScore);
     }
 }

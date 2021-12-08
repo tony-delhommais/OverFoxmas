@@ -85,7 +85,7 @@ public class Enemy : Entity
 
         if (EnemyPosOnScreen.y < 0)
         {
-            DestroySelf();
+            Dispawn();
         }
     }
 
@@ -93,7 +93,7 @@ public class Enemy : Entity
     {
         if (collider.CompareTag("Player"))
         {
-            DestroySelf();
+            Dispawn();
         }
         if (collider.CompareTag("Bullet"))
         {
@@ -101,7 +101,9 @@ public class Enemy : Entity
 
             if (m_CurrentPV <= 0)
             {
-                DestroySelf();
+                collider.GetComponent<Bullet>().EnemyHitIsDead(5);
+
+                Dispawn();
             }
         }
         /*if (collider.CompareTag("Enemy"))
@@ -110,15 +112,16 @@ public class Enemy : Entity
         }*/
     }
 
-    private void DestroySelf()
-    {
-        EnemiesManager.Current.DecreaseEnemyCount();
-        Destroy(gameObject);
-    }
-
     public override void Spawn()
     {
         print("Spawn Enemy");
+    }
+
+    public override void Dispawn()
+    {
+        EnemiesManager.Current.DecreaseEnemyCount();
+
+        base.Dispawn();
     }
 
     public void SetEnemySpeed(float p_EnemySpeed)

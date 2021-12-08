@@ -120,16 +120,15 @@ public class Player : Entity
 
             if (m_CurrentPV <= 0)
             {
-                print($"Game Over! Score: {m_Score}");
-                Destroy(gameObject);
+                Dispawn();
             }
         }
     }
 
-    private void OnBulletHit()
+    private void OnBulletHit(int p_incScore)
     {
-        m_Score += 5;
-        print($"Score: {m_Score}");
+        m_Score += p_incScore;
+        
         OnScoreChange();
     }
 
@@ -141,5 +140,10 @@ public class Player : Entity
     public override void Spawn()
     {
         print("Spawn Player");
+    }
+
+    public override void Dispawn()
+    {
+        base.Dispawn();
     }
 }

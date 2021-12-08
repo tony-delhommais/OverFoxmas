@@ -84,6 +84,8 @@ public class EnemiesManager : MonoBehaviour
         {
             yield return new WaitForSeconds(m_TimeBetweenWaves);
 
+            bool BreakForBoss = false;
+
             if(m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MultipleEnemies)
             {
                 for(int i = 0; i < m_CurrentWaveAttackerTypePose + 1; i++)
@@ -94,15 +96,17 @@ public class EnemiesManager : MonoBehaviour
             else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MiniBoss)
             {
                 SpawnMiniBoss();
+                BreakForBoss = true;
             }
             else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.Boss)
             {
                 SpawnBoss();
+                BreakForBoss = true;
             }
 
             m_CurrentWaveAttackerTypePose++;
 
-            if (m_CurrentWaveAttackerTypePose == m_WaveAttackStruct.Length)
+            if (m_CurrentWaveAttackerTypePose == m_WaveAttackStruct.Length || BreakForBoss)
                 break;
         }
     }
@@ -189,6 +193,11 @@ public class EnemiesManager : MonoBehaviour
                 m_EnemyCount++;
             }
         }
+    }
+
+    public void MiniBossDead()
+    {
+        StartCoroutine(WaveSpawn());
     }
 
     private void SpawnBoss()

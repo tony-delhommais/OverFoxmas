@@ -33,4 +33,9 @@ public abstract class Entity : MonoBehaviour
     }
 
     abstract public void Spawn();
+
+    virtual public void Dispawn()
+    {
+        Destroy(gameObject);
+    }
 }
