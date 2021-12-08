@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Dev/dev-celine-menu.unity
+    guid: c06d607f0c4935245bf7307aa157d8bb
+  - enabled: 1
+    path: Assets/Scenes/Dev/dev-celine.unity
+    guid: 87cdc547fc045aa4db4de195e524695c
   m_configObjects: {}

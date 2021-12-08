@@ -6,11 +6,19 @@ using UnityEngine.SceneManagement;
 public class GameManagerr : MonoBehaviour
 {
     public static GameManagerr Current;
+
+    [SerializeField]
+    private GameObject m_fox = null;
+
+    private Player m_Player = null;
+
     private bool m_pause = false;
+
 
     private void Awake()
     {
         Current = this;
+        m_Player = m_fox?.GetComponent<Player>();
     }
 
     // Start is called before the first frame update
@@ -28,6 +36,7 @@ public class GameManagerr : MonoBehaviour
     static public void ResetLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1f;
     }
     public bool GetPause()
     {
@@ -45,6 +54,27 @@ public class GameManagerr : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
+    }
+
+    public void ExitGame()
+    {
+        SceneManager.LoadScene("dev-celine-menu");
+        Time.timeScale = 1f;
+    }
+
+    /// <summary>
+    /// Display at the end of the game
+    /// </summary>
+    /// <param name="win">Define if the game is won or lost</param>
+    public void EndGame(bool win)
+    {
+        //Set the hight score
+        if (m_Player.GetScore() > SaveData.Current.GetHightScore())
+        {
+            SaveData.Current.SetHightScore(m_Player.GetScore());
+        }
+
+        UserInterface.Current.OnGameEnd(win);
     }
 
 }
