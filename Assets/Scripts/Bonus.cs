@@ -8,6 +8,7 @@ public enum BonusType
     ShootSpeed,
     Shield,
     Heal,
+    Points,
     SIZE
 }
 
@@ -66,6 +67,9 @@ public class Bonus : MonoBehaviour
                 break;
             case BonusType.ShootSpeed:
                 m_BonusValue.m_BonusValue = Random.Range(3, 15);
+                break;
+            case BonusType.Points:
+                m_BonusValue.m_BonusValue = Random.Range(5, 50);
                 break;
         }
     }

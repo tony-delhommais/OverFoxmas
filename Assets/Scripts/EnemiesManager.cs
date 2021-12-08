@@ -278,6 +278,6 @@ public class EnemiesManager : MonoBehaviour
 
     public void BossDead()
     {
-        
+        GameManagerr.Current.EndGame(true);
     }
 }
