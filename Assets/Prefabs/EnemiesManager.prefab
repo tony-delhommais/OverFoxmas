@@ -43,8 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f9e48b14b519849b91c52a3eefa5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WaveAttackStruct: 0100000000000000
-  m_TimeBetweenWaves: 5
+  m_WaveAttackStruct: 000000000000000001000000000000000000000002000000
+  m_TimeBetweenWaves: 30
   m_WavesShapes:
   - m_MinSpawnOffset: 0.75
     m_MaxSpawnOffset: 0.75
@@ -72,7 +72,8 @@ MonoBehaviour:
       m_EnemyInstance: {fileID: 1444576096768750223, guid: fcf0a514907db8442b153fc95eb7be10, type: 3}
     - m_RelativePosition: {x: -1, y: 1}
       m_EnemyInstance: {fileID: 1444576096768750223, guid: fcf0a514907db8442b153fc95eb7be10, type: 3}
-  m_EnemyInstance:
-  - {fileID: 1444576096768750223, guid: fcf0a514907db8442b153fc95eb7be10, type: 3}
+  m_EnemyInstance: {fileID: 1444576096768750223, guid: fcf0a514907db8442b153fc95eb7be10, type: 3}
+  m_KillerEnemyInstance: {fileID: 5969164846357021319, guid: d670deb8aeb699a419e9df2ba283e73f, type: 3}
+  m_KillerPowerEnemyInstance: {fileID: 543016497268327800, guid: f1e948f0097007b4aae7693336ec18b2, type: 3}
   m_MiniBossInstance: {fileID: 480387399535473822, guid: 67b56e570983c56498ee5872ce6b337d, type: 3}
   m_BossInstance: {fileID: 3643081829005987243, guid: 93881b05832bb764c9a280a623d38f00, type: 3}

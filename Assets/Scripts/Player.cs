@@ -23,6 +23,10 @@ public class Player : Entity
 
     private int m_Score = 0;
 
+    private bool m_HaveShield = false;
+
+    private int m_MultiShootValue = 1;
+
     public event Action OnHPChange;
     public event Action OnScoreChange;
 
@@ -93,10 +97,28 @@ public class Player : Entity
                 if (m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
                 {
                     Vector3 SpawnPoint = transform.position;
-                    GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
 
+                    GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
                     //abonnement Being Sport
                     newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+
+                    if(m_MultiShootValue >= 3)
+                    {
+                        newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.Euler(0, 0, 45)) as GameObject;
+                        newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+
+                        newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.Euler(0, 0, -45)) as GameObject;
+                        newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+                    }
+
+                    if (m_MultiShootValue >= 5)
+                    {
+                        newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.Euler(0, 0, 22.5f)) as GameObject;
+                        newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+
+                        newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.Euler(0, 0, -22.5f)) as GameObject;
+                        newBullet.GetComponent<Bullet>().OnHit += OnBulletHit;
+                    }
 
                     m_Stopwatch.Restart();
                 }
@@ -121,6 +143,37 @@ public class Player : Entity
         {
             DecreaseHP(10);
         }
+
+        if (collider.CompareTag("Bonus"))
+        {
+            BonusValue bonus = collider.gameObject.GetComponent<Bonus>().GetBonus();
+
+            switch (bonus.m_BonusType)
+            {
+                case BonusType.Heal:
+                    Heal(bonus.m_BonusValue);
+                    break;
+                case BonusType.MultiShoot:
+                    if (bonus.m_BonusValue > m_MultiShootValue)
+                        m_MultiShootValue = bonus.m_BonusValue;
+                    break;
+                case BonusType.Shield:
+                    m_HaveShield = true;
+                    StartCoroutine(ShieldCoroutine(bonus.m_BonusValue));
+                    break;
+                case BonusType.ShootSpeed:
+                    if (bonus.m_BonusValue > m_BulletSpawnSpeed)
+                        m_BulletSpawnSpeed = bonus.m_BonusValue;
+                    break;
+            }
+        }
+    }
+
+    IEnumerator ShieldCoroutine(int p_duration)
+    {
+        yield return new WaitForSeconds(p_duration);
+
+        m_HaveShield = false;
     }
 
     private void OnBulletHit(int p_incScore)
@@ -132,13 +185,23 @@ public class Player : Entity
 
     private void DecreaseHP(int p_hp)
     {
-        m_CurrentPV -= p_hp;
-        OnHPChange();
-
-        if (m_CurrentPV <= 0)
+        if (!m_HaveShield)
         {
-            Dispawn();
+            m_CurrentPV -= p_hp;
+            OnHPChange();
+
+            if (m_CurrentPV <= 0)
+            {
+                Dispawn();
+            }
         }
+    }
+
+    private void Heal(int p_hp)
+    {
+        m_CurrentPV = Mathf.Clamp(m_CurrentPV + p_hp, 0, m_MaxPV);
+
+        OnHPChange();
     }
 
     public int GetScore()
