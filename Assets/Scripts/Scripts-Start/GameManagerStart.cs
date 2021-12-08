@@ -28,9 +28,9 @@ public class GameManagerStart : MonoBehaviour
  
     }
 
-    public void LoadGameScene()
+    public void LoadGameScene(string p_SceneName)
     {
-        SceneManager.LoadScene("dev-celine");
+        if(p_SceneName.Length != 0) SceneManager.LoadScene(p_SceneName);
     }
 
     public void LoadPanelMenu()
