@@ -188,56 +188,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_MiniBossInstance
-      value: 
-      objectReference: {fileID: 480387399535473822, guid: 67b56e570983c56498ee5872ce6b337d, type: 3}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_TimeBetweenWaves
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
       propertyPath: m_WaveAttackStruct.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
       propertyPath: m_WaveAttackStruct.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[1]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[2]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[3]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[4]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[5]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[6]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[7]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[8]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
-      propertyPath: m_WaveAttackStruct.Array.data[9]
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3890326782168337100, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
       propertyPath: m_Name

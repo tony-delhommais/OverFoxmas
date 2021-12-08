@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiniBoss : Entity
+public class Boss : Entity
 {
     private void OnTriggerEnter(Collider collider)
     {
@@ -12,7 +12,7 @@ public class MiniBoss : Entity
 
             if (m_CurrentPV <= 0)
             {
-                collider.GetComponent<Bullet>().EnemyHitIsDead(20);
+                collider.GetComponent<Bullet>().EnemyHitIsDead(50);
 
                 Dispawn();
             }
@@ -21,12 +21,12 @@ public class MiniBoss : Entity
 
     public override void Spawn()
     {
-        print("Spawn MiniBoss");
+        print("Spawn Boss");
     }
 
     public override void Dispawn()
     {
-        EnemiesManager.Current.MiniBossDead();
+        EnemiesManager.Current.BossDead();
 
         base.Dispawn();
     }

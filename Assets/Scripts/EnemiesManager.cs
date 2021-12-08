@@ -188,7 +188,7 @@ public class EnemiesManager : MonoBehaviour
                 NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
                 NewEnemyScript.SetEnemySpeed(1.0f);
                 NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
-                NewEnemyScript.SetRotationRadius(2.0f);
+                NewEnemyScript.SetRotationRadius(1.8f);
 
                 m_EnemyCount++;
             }
@@ -202,6 +202,57 @@ public class EnemiesManager : MonoBehaviour
 
     private void SpawnBoss()
     {
-        // TODO
+        Vector3 SpawnPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height * 0.95f, Camera.main.nearClipPlane));
+        SpawnPos.z = 0;
+
+        GameObject boss = null;
+
+        if (m_BossInstance)
+        {
+            boss = Instantiate(m_BossInstance, SpawnPos, Quaternion.identity);
+        }
+
+        if (boss && m_EnemyInstance[0])
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 newPos = RandomScreenPos();
+
+                GameObject NewEnemy = Instantiate(m_EnemyInstance[0], SpawnPos, Quaternion.identity);
+                NewEnemy.transform.SetParent(boss.transform);
+
+                Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
+
+                NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
+                NewEnemyScript.SetEnemySpeed(1.0f);
+                NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
+                NewEnemyScript.SetRotationRadius(1.8f);
+
+                m_EnemyCount++;
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                Vector3 newPos = RandomScreenPos();
+
+                GameObject NewEnemy = Instantiate(m_EnemyInstance[0], SpawnPos, Quaternion.identity);
+                NewEnemy.transform.SetParent(boss.transform);
+
+                Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
+
+                NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
+                NewEnemyScript.SetEnemySpeed(1.0f);
+                NewEnemyScript.SetRotationAngle(Mathf.PI / 4 * i);
+                NewEnemyScript.SetRotationRadius(2.5f);
+                NewEnemyScript.SetRotationClockwise(false);
+
+                m_EnemyCount++;
+            }
+        }
+    }
+
+    public void BossDead()
+    {
+        
     }
 }
