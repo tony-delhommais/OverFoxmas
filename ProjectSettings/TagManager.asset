@@ -9,6 +9,7 @@ TagManager:
   - Boss
   - EnemyBullet
   - Bonus
+  - Selectable
   layers:
   - Default
   - TransparentFX
