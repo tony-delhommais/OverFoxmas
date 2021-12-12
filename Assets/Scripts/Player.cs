@@ -9,6 +9,9 @@ public class Player : Entity
     private Camera m_MainCamera;
 
     [SerializeField]
+    private Transform m_MovingArea = null;
+
+    [SerializeField]
     private float m_VerticalSpeed = 5f;
     [SerializeField]
     private float m_HorizontalSpeed = 5f;
@@ -54,42 +57,42 @@ public class Player : Entity
     {
         if (!GameManagerr.Current.GetPause())
         { 
-            Vector3 PlayerPosOnScreen = m_MainCamera.WorldToScreenPoint(transform.position);
-
-
-            //RIGHT
-            if (PlayerPosOnScreen.x < Screen.width)
+            if (m_MovingArea)
             {
-                if (Input.GetKey(KeyCode.RightArrow))
+                //RIGHT
+                if (transform.position.x < m_MovingArea.position.x + (m_MovingArea.localScale.x / 2))
                 {
-                    transform.position += transform.right * Time.deltaTime * m_HorizontalSpeed;
+                    if (Input.GetKey(KeyCode.RightArrow))
+                    {
+                        transform.position += transform.right * Time.deltaTime * m_HorizontalSpeed;
+                    }
                 }
-            }
 
-            //LEFT
-            if (PlayerPosOnScreen.x > 0)
-            {
-                if (Input.GetKey(KeyCode.LeftArrow))
+                //LEFT
+                if (transform.position.x > m_MovingArea.position.x - (m_MovingArea.localScale.x / 2))
                 {
-                    transform.position += transform.right * -1 * Time.deltaTime * m_HorizontalSpeed;
+                    if (Input.GetKey(KeyCode.LeftArrow))
+                    {
+                        transform.position += transform.right * -1 * Time.deltaTime * m_HorizontalSpeed;
+                    }
                 }
-            }
 
-            //UP
-            if (PlayerPosOnScreen.y < Screen.height)
-            {
-                if (Input.GetKey(KeyCode.UpArrow))
+                //UP
+                if (transform.position.y < m_MovingArea.position.y + (m_MovingArea.localScale.y / 2))
                 {
-                    transform.position += transform.up * Time.deltaTime * m_VerticalSpeed;
+                    if (Input.GetKey(KeyCode.UpArrow))
+                    {
+                        transform.position += transform.up * Time.deltaTime * m_VerticalSpeed;
+                    }
                 }
-            }
 
-            //DOWN
-            if (PlayerPosOnScreen.y > 0)
-            {
-                if (Input.GetKey(KeyCode.DownArrow))
+                //DOWN
+                if (transform.position.y > m_MovingArea.position.y - (m_MovingArea.localScale.y / 2))
                 {
-                    transform.position += transform.up * -1 * Time.deltaTime * m_VerticalSpeed;
+                    if (Input.GetKey(KeyCode.DownArrow))
+                    {
+                        transform.position += transform.up * -1 * Time.deltaTime * m_VerticalSpeed;
+                    }
                 }
             }
 
