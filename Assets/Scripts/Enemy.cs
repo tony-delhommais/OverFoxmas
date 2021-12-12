@@ -122,7 +122,7 @@ public class Enemy : Entity
 
     public override void Spawn()
     {
-        print("Spawn Enemy");
+        //print("Spawn Enemy");
     }
 
     public override void Dispawn()

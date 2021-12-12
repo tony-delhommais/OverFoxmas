@@ -24,7 +24,7 @@ public class MiniBoss : Entity
 
     public override void Spawn()
     {
-        print("Spawn MiniBoss");
+        //print("Spawn MiniBoss");
     }
 
     public override void Dispawn()

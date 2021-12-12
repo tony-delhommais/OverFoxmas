@@ -24,7 +24,7 @@ public class Boss : Entity
 
     public override void Spawn()
     {
-        print("Spawn Boss");
+        //print("Spawn Boss");
     }
 
     public override void Dispawn()
