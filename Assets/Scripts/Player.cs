@@ -26,7 +26,7 @@ public class Player : Entity
 
     private int m_Score = 0;
 
-    private bool m_HaveShield = false;
+    private bool m_HaveShield = true;
 
     private int m_MultiShootValue = 1;
 
@@ -190,7 +190,7 @@ public class Player : Entity
         {
             m_Score += p_incScore;
 
-            OnScoreChange();
+            if (OnScoreChange != null) OnScoreChange();
         }
     }
 
@@ -199,7 +199,7 @@ public class Player : Entity
         if (!m_HaveShield)
         {
             m_CurrentPV -= p_hp;
-            OnHPChange();
+            if(OnHPChange != null) OnHPChange();
 
             if (m_CurrentPV <= 0)
             {
@@ -213,7 +213,7 @@ public class Player : Entity
     {
         m_CurrentPV = Mathf.Clamp(m_CurrentPV + p_hp, 0, m_MaxPV);
 
-        OnHPChange();
+        if (OnHPChange != null) OnHPChange();
     }
 
     public int GetScore()
@@ -229,7 +229,7 @@ public class Player : Entity
 
     public override void Spawn()
     {
-        print("Spawn Player");
+        //print("Spawn Player");
     }
 
     public override void Dispawn()
