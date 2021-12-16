@@ -60,7 +60,7 @@ public class Enemy : Entity
 
     protected void TopDownMovment()
     {
-        transform.position += transform.up * -1 * m_EnemySpeed * Time.deltaTime;
+        transform.position += transform.forward * -1 * m_EnemySpeed * Time.deltaTime;
 
         CheckBottomPos();
     }
@@ -122,7 +122,7 @@ public class Enemy : Entity
 
     public override void Spawn()
     {
-        print("Spawn Enemy");
+        //print("Spawn Enemy");
     }
 
     public override void Dispawn()

@@ -15,6 +15,8 @@ public class Bullet : MonoBehaviour
 
     public event Action<int> OnHit;
 
+    private bool m_HaveHitWall = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -26,13 +28,16 @@ public class Bullet : MonoBehaviour
     /// </summary>
     private void UpdateBulletPosition()
     {
-        transform.position += transform.up * m_BulletSpeed * Time.deltaTime;
-
-        Vector3 BulletPosOnScreen = Camera.main.WorldToScreenPoint(transform.position);
-
-        if(BulletPosOnScreen.y > Screen.height)
+        if (!m_HaveHitWall)
         {
-            Destroy(gameObject);
+            transform.position += transform.up * m_BulletSpeed * Time.deltaTime;
+
+            Vector3 BulletPosOnScreen = Camera.main.WorldToScreenPoint(transform.position);
+
+            if (BulletPosOnScreen.y > Screen.height)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -52,10 +57,24 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (collider.CompareTag("HitWall"))
+        {
+            StartCoroutine(OnHitWall());
+
+            m_HaveHitWall = true;
+        }
     }
 
     public void EnemyHitIsDead(int p_incScore)
     {
         OnHit(p_incScore);
+    }
+
+    private IEnumerator OnHitWall()
+    {
+        yield return new WaitForSeconds(5);
+
+        Destroy(gameObject);
     }
 }

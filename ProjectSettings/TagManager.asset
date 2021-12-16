@@ -10,6 +10,7 @@ TagManager:
   - EnemyBullet
   - Bonus
   - Selectable
+  - HitWall
   layers:
   - Default
   - TransparentFX

@@ -45,7 +45,7 @@ public class GameManagerr : MonoBehaviour
     public void TogglePlayPause()
     {
         m_pause = !m_pause;
-        UserInterface.Current.SetPausePanel(m_pause);
+        if(UserInterface.Current) UserInterface.Current.SetPausePanel(m_pause);
         if (m_pause)
         {
             Time.timeScale = 0f;
@@ -74,12 +74,12 @@ public class GameManagerr : MonoBehaviour
         if (win && m_Player) m_Player.GameFinished();
 
         //Set the hight score
-        if (m_Player.GetScore() > SaveData.Current.GetHightScore())
+        if (SaveData.Current && m_Player.GetScore() > SaveData.Current.GetHightScore())
         {
             SaveData.Current.SetHightScore(m_Player.GetScore());
         }
 
-        UserInterface.Current.OnGameEnd(win);
+        if(UserInterface.Current) UserInterface.Current.OnGameEnd(win);
     }
 
 }

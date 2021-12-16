@@ -31,6 +31,9 @@ public class EnemiesManager : MonoBehaviour
     public static EnemiesManager Current;
 
     [SerializeField]
+    private Transform m_SpawnArea = null;
+
+    [SerializeField]
     private WaveAttackerType[] m_WaveAttackStruct;
 
     [SerializeField]
@@ -124,9 +127,10 @@ public class EnemiesManager : MonoBehaviour
     {
         if (m_EnemyInstance)
         {
-            Vector3 newPos = RandomScreenPos();
+            Vector3 newPos = RandomSpawnPos();
 
-            Instantiate(m_EnemyInstance, newPos, Quaternion.identity);
+            GameObject enemy = Instantiate(m_EnemyInstance, newPos, Quaternion.identity);
+            enemy.transform.Rotate(new Vector3(-90, 0, 0));
 
             m_EnemyCount++;
         }
@@ -137,7 +141,7 @@ public class EnemiesManager : MonoBehaviour
         int randomStruct = Random.Range(0, m_WavesShapes.Length);
         EnemyWaveShape WaveShape = m_WavesShapes[randomStruct];
 
-        Vector3 shapePos = RandomScreenPos(WaveShape.m_MinSpawnOffset, WaveShape.m_MaxSpawnOffset);
+        Vector3 shapePos = RandomSpawnPos(WaveShape.m_MinSpawnOffset, WaveShape.m_MaxSpawnOffset);
 
         bool bonus = Random.Range(0f, 1f) < 0.5;
         int bonusPos = -1;
@@ -154,8 +158,9 @@ public class EnemiesManager : MonoBehaviour
             {
                 Vector3 itemPose = shapePos + new Vector3(WaveShapeItem.m_RelativePosition.x, WaveShapeItem.m_RelativePosition.y, 0.0f);
                 GameObject enemy = Instantiate(WaveShapeItem.m_EnemyInstance, itemPose, Quaternion.identity);
+                enemy.transform.Rotate(new Vector3(-90, 0, 0));
 
-                if(bonusPos == pos)
+                if (bonusPos == pos)
                 {
                     enemy.GetComponent<Enemy>().SetSpawnBonus(true);
                 }
@@ -167,19 +172,19 @@ public class EnemiesManager : MonoBehaviour
         }
     }
 
-    private Vector3 RandomScreenPos(float p_MinOffset = 0f, float p_MaxOffset = 0f)
+    private Vector3 RandomSpawnPos(float p_MinOffset = 0f, float p_MaxOffset = 0f)
     {
-        float RandomPosX = Random.Range(0f, Screen.width);
-        Vector3 spawnPos = Camera.main.ScreenToWorldPoint(new Vector3(RandomPosX, Screen.height, Camera.main.nearClipPlane));
+        if (m_SpawnArea)
+        {
+            Vector3 spawnPos;
+            spawnPos.x = Random.Range(m_SpawnArea.position.x - (m_SpawnArea.localScale.x / 2) + p_MinOffset, m_SpawnArea.position.x + (m_SpawnArea.localScale.x / 2) - p_MaxOffset);
+            spawnPos.y = m_SpawnArea.position.y;
+            spawnPos.z = m_SpawnArea.position.z;
 
-        float minSpawn = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane)).x + p_MinOffset;
-        float maxSpawn = Camera.main.ScreenToWorldPoint(new Vector3(Screen.height, Screen.height, Camera.main.nearClipPlane)).x - p_MaxOffset;
+            return spawnPos;
+        }
 
-        spawnPos.x = Mathf.Clamp(spawnPos.x, minSpawn, maxSpawn);
-        spawnPos.y += 2;
-        spawnPos.z = 0;
-
-        return spawnPos;
+        return new Vector3(0, 0, 0);
     }
 
     public void DecreaseEnemyCount()
@@ -189,8 +194,7 @@ public class EnemiesManager : MonoBehaviour
 
     private void SpawnMiniBoss()
     {
-        Vector3 SpawnPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height * 0.95f, Camera.main.nearClipPlane));
-        SpawnPos.z = 0;
+        Vector3 SpawnPos = m_SpawnArea.position;
 
         GameObject miniboss = null;
 
@@ -203,9 +207,8 @@ public class EnemiesManager : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                Vector3 newPos = RandomScreenPos();
-
                 GameObject NewEnemy = Instantiate((i % 2 == 0 ? m_KillerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
+                NewEnemy.transform.Rotate(new Vector3(-90, 0, 0));
 
                 Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
 
@@ -226,46 +229,44 @@ public class EnemiesManager : MonoBehaviour
 
     private void SpawnBoss()
     {
-        Vector3 SpawnPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height * 0.95f, Camera.main.nearClipPlane));
-        SpawnPos.z = 0;
+        Vector3 SpawnPos = m_SpawnArea.position;
 
         GameObject boss = null;
 
         if (m_BossInstance)
         {
             boss = Instantiate(m_BossInstance, SpawnPos, Quaternion.identity);
+            boss.transform.Rotate(new Vector3(-90, 0, 0));
         }
 
         if (boss && m_EnemyInstance && m_KillerPowerEnemyInstance)
         {
             for (int i = 0; i < 4; i++)
             {
-                Vector3 newPos = RandomScreenPos();
-
                 GameObject NewEnemy = Instantiate((i % 2 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
+                NewEnemy.transform.Rotate(new Vector3(-90, 0, 0));
 
                 Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
 
                 NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
                 NewEnemyScript.SetEnemySpeed(1.0f);
                 NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
-                NewEnemyScript.SetRotationRadius(1.8f);
+                NewEnemyScript.SetRotationRadius(2.2f);
 
                 m_EnemyCount++;
             }
 
             for (int i = 0; i < 8; i++)
             {
-                Vector3 newPos = RandomScreenPos();
-
                 GameObject NewEnemy = Instantiate((i % 4 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
+                NewEnemy.transform.Rotate(new Vector3(-90, 0, 0));
 
                 Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
 
                 NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
                 NewEnemyScript.SetEnemySpeed(1.0f);
                 NewEnemyScript.SetRotationAngle(Mathf.PI / 4 * i);
-                NewEnemyScript.SetRotationRadius(2.5f);
+                NewEnemyScript.SetRotationRadius(2.7f);
                 NewEnemyScript.SetRotationClockwise(false);
 
                 m_EnemyCount++;
