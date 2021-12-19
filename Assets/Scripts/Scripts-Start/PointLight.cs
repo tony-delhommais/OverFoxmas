@@ -42,6 +42,5 @@ public class PointLight : MonoBehaviour
             m_LightON = !m_LightON;
             yield return new WaitForSeconds(1f);
         }
-        yield return 0;
     }
 }

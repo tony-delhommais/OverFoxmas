@@ -60,7 +60,7 @@ public class Enemy : Entity
 
     protected void TopDownMovment()
     {
-        transform.position += transform.up * -1 * m_EnemySpeed * Time.deltaTime;
+        transform.position += transform.forward * -1 * m_EnemySpeed * Time.deltaTime;
 
         CheckBottomPos();
     }
@@ -106,6 +106,11 @@ public class Enemy : Entity
             {
                 collider.GetComponent<Bullet>().EnemyHitIsDead(5);
 
+                if (m_SpawnBonus)
+                {
+                    if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+                }
+
                 Dispawn();
             }
         }
@@ -117,17 +122,12 @@ public class Enemy : Entity
 
     public override void Spawn()
     {
-        print("Spawn Enemy");
+        //print("Spawn Enemy");
     }
 
     public override void Dispawn()
     {
         EnemiesManager.Current.DecreaseEnemyCount();
-
-        if(m_SpawnBonus)
-        {
-            if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
-        }
 
         base.Dispawn();
     }
