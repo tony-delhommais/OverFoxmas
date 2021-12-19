@@ -43,6 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d22a63fb670af764c81d16cef922fc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Menu: {fileID: 0}
-  m_Settings: {fileID: 0}
-  m_Credit: {fileID: 0}
+  m_CineCam: {fileID: 0}
+  m_SpotMenu: {fileID: 0}
+  m_SpotOptions: {fileID: 0}
+  m_SpotCredits: {fileID: 0}
+  m_LookAtSpotMenu: {fileID: 0}
+  m_LookAtSpotOptions: {fileID: 0}
+  m_LookAtSpotCredits: {fileID: 0}

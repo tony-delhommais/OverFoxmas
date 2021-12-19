@@ -30,6 +30,9 @@ public class GameManagerStart : MonoBehaviour
     [SerializeField]
     private Transform m_LookAtSpotCredits = null;
 
+    private Transform m_LookFrom = null;
+    private Transform m_LookTo = null;
+
 
 
     //PANELS
@@ -53,10 +56,26 @@ public class GameManagerStart : MonoBehaviour
         m_Credit.SetActive(false);*/
     }
 
+    float timeToWait = 7.0f;
+    float timer = 0;
+
     // Update is called once per frame
     void Update()
     {
- 
+        if(m_LookTo && m_CineCam)
+        {
+            m_CineCam.LookAt.position = Vector3.Lerp(m_LookFrom.position, m_LookTo.position, timer / timeToWait);
+            //m_CineCam.LookAt.rotation = Quaternion.Lerp(m_LookFrom.rotation, m_LookTo.rotation, timer / timeToWait);
+
+            if (timer >= timeToWait)
+            {
+                m_LookTo = null;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
+        }
     }
 
     public void LoadGameScene(string p_SceneName)
@@ -99,10 +118,14 @@ public class GameManagerStart : MonoBehaviour
         {
             m_CineCam.Follow = m_SpotMenu;
 
-            if (m_LookAtSpotMenu != null)
+            m_LookFrom = m_CineCam.LookAt.transform;
+            m_LookTo = m_LookAtSpotMenu;
+            timer = 0;
+
+            /*if (m_LookAtSpotMenu != null)
             {
                 m_CineCam.LookAt = m_LookAtSpotMenu;
-            }
+            }*/
         }
     }
 
@@ -112,10 +135,14 @@ public class GameManagerStart : MonoBehaviour
         {
             m_CineCam.Follow = m_SpotOptions;
 
-            if (m_LookAtSpotOptions != null)
+            m_LookFrom = m_CineCam.LookAt.transform;
+            m_LookTo = m_LookAtSpotOptions;
+            timer = 0;
+
+            /*if (m_LookAtSpotOptions != null)
             {
                 m_CineCam.LookAt = m_LookAtSpotOptions;
-            }
+            }*/
         }
     }
 
@@ -125,10 +152,14 @@ public class GameManagerStart : MonoBehaviour
         {
             m_CineCam.Follow = m_SpotCredits;
 
-            if (m_LookAtSpotCredits != null)
+            m_LookFrom = m_CineCam.LookAt.transform;
+            m_LookTo = m_LookAtSpotCredits;
+            timer = 0;
+
+            /*if (m_LookAtSpotCredits != null)
             {
                 m_CineCam.LookAt = m_LookAtSpotCredits;
-            }
+            }*/
         }
     }
 }
