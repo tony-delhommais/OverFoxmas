@@ -203,6 +203,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 9077926073120308842, guid: 67810069be9ebca4dbbf08bf6daf50c8, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 3398073514908505954, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67810069be9ebca4dbbf08bf6daf50c8, type: 3}
 --- !u!4 &459364945803653320 stripped
@@ -264,6 +268,10 @@ PrefabInstance:
     - target: {fileID: 8798926709867274901, guid: a75f2a0751599ff4eb983268130dde06, type: 3}
       propertyPath: m_Name
       value: lightsMulti (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8798926709867274901, guid: a75f2a0751599ff4eb983268130dde06, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a75f2a0751599ff4eb983268130dde06, type: 3}
@@ -1013,6 +1021,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -107955116091867106, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 3398073514908505954, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
     - target: {fileID: 919132149155446097, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
       propertyPath: m_Name
       value: cabinWindow
@@ -1757,6 +1769,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -107955116091867106, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 3398073514908505954, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
     - target: {fileID: 919132149155446097, guid: 6cd88ed54905fce4d8b2ea5633ec7cf2, type: 3}
       propertyPath: m_Name
       value: cabinWindow (1)
