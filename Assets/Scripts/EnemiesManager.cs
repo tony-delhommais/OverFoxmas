@@ -272,6 +272,7 @@ public class EnemiesManager : MonoBehaviour
         if (m_MiniBossInstance)
         {
             miniboss = Instantiate(m_MiniBossInstance, SpawnPos, Quaternion.identity);
+            miniboss.transform.Rotate(new Vector3(-90, 0, 0));
         }
 
         if (miniboss && m_EnemyInstance && m_KillerEnemyInstance)

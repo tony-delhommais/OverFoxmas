@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 480387399535473821}
   - component: {fileID: 480387399535473820}
   - component: {fileID: 480387399535473823}
+  - component: {fileID: 261375034864338568}
   m_Layer: 0
   m_Name: MiniBoss
   m_TagString: Boss
@@ -77,6 +78,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MaxPV: 50
   m_BonusPrefab: {fileID: 3077491259520597543, guid: 447f5e6619a0b2a499a878b7f2e63363, type: 3}
+--- !u!95 &261375034864338568
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480387399535473822}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fdc440e0e62a3994a90bed8802db86db, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &2638730684684650372
 PrefabInstance:
   m_ObjectHideFlags: 0

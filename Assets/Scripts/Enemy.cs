@@ -183,38 +183,6 @@ public class Enemy : Entity
     public override void Spawn()
     {
         //print("Spawn Enemy");
-
-        // TODO: Start coroutine pour spawn anim
-
-        if(m_SpawnAnim)
-        {
-            //StartCoroutine(SpawnAnimCoroutine());
-        }
-    }
-
-    IEnumerator SpawnAnimCoroutine()
-    {
-        float time = 0f;
-        /*
-        print(Vector3.Distance(m_OriginalPos, m_TargetSpawnPosition));
-        while (Vector3.Distance(m_OriginalPos, m_TargetSpawnPosition) < 0.5)
-        {
-            transform.position = Vector3.Lerp(m_OriginalPos, m_TargetSpawnPosition, Mathf.Clamp(time, 0f, 1f));
-            time += Time.deltaTime;
-        }*/
-        print(Vector3.Distance(transform.position, m_TargetSpawnPosition));
-        while (Vector3.Distance(transform.position, m_TargetSpawnPosition) > 0.01)
-        {
-            //print(Vector3.Distance(transform.position, m_TargetSpawnPosition));
-            transform.position = Vector3.Lerp(m_OriginalPos, m_TargetSpawnPosition, Mathf.Clamp(time / 5, 0f, 1f));
-            time += Time.deltaTime;
-        }
-
-        m_SpawnAnim = false;
-
-        m_OriginalPos = m_TargetSpawnPosition;
-
-        yield return new WaitForSeconds(0);
     }
 
     protected override void Dispawn()
