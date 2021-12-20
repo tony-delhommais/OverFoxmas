@@ -33,6 +33,8 @@ public class EnemiesManager : MonoBehaviour
     [SerializeField]
     private Transform m_SpawnArea = null;
 
+    [Space]
+
     [SerializeField]
     private WaveAttackerType[] m_WaveAttackStruct;
 
@@ -52,6 +54,9 @@ public class EnemiesManager : MonoBehaviour
     private GameObject m_EnemyInstance = null;
 
     [SerializeField]
+    private GameObject m_EnemyFastInstance = null;
+
+    [SerializeField]
     private GameObject m_KillerEnemyInstance = null;
 
     [SerializeField]
@@ -62,6 +67,23 @@ public class EnemiesManager : MonoBehaviour
 
     [SerializeField]
     private GameObject m_BossInstance = null;
+
+    [Space]
+
+    [SerializeField]
+    private Transform[] m_CookieSpawnPoints = null;
+
+    [SerializeField]
+    private Transform[] m_GingerBreadSpawnPoints = null;
+
+    [SerializeField]
+    private Transform[] m_CupcakeSpawnPoints = null;
+
+    [SerializeField]
+    private Transform[] m_DonutSpawnPoints = null;
+
+    [SerializeField]
+    private Transform m_BossSpawnPoints = null;
 
     private int m_EnemyCount = 0;
     private float m_Ratio = 0.1f;
@@ -125,12 +147,45 @@ public class EnemiesManager : MonoBehaviour
     
     private void SpawnRandomSingleEnemy()
     {
-        if (m_EnemyInstance)
-        {
-            Vector3 newPos = RandomSpawnPos();
+        GameObject enemy = null;
 
-            GameObject enemy = Instantiate(m_EnemyInstance, newPos, Quaternion.identity);
+        if (m_EnemyInstance && m_EnemyFastInstance)
+        {
+            bool spawnSimpleEnemy = Random.Range(0f, 1f) < 0.5f;
+
+            GameObject instanceToSpawn = (spawnSimpleEnemy ? m_EnemyInstance : m_EnemyFastInstance);
+
+            Vector3 instanceOrigin = (spawnSimpleEnemy ? 
+                m_GingerBreadSpawnPoints[Random.Range(0, m_GingerBreadSpawnPoints.Length)].transform.position :
+                m_CookieSpawnPoints[Random.Range(0, m_CookieSpawnPoints.Length)].transform.position
+            );
+
+            enemy = Instantiate(instanceToSpawn, instanceOrigin, Quaternion.identity);
+        }
+        else if(m_EnemyInstance)
+        {
+            GameObject instanceToSpawn = m_EnemyInstance;
+
+            Vector3 instanceOrigin = m_GingerBreadSpawnPoints[Random.Range(0, m_GingerBreadSpawnPoints.Length)].transform.position;
+
+            enemy = Instantiate(instanceToSpawn, instanceOrigin, Quaternion.identity);
+        }
+        else if (m_EnemyFastInstance)
+        {
+            GameObject instanceToSpawn = m_EnemyFastInstance;
+
+            Vector3 instanceOrigin = m_CookieSpawnPoints[Random.Range(0, m_CookieSpawnPoints.Length)].transform.position;
+
+            enemy = Instantiate(instanceToSpawn, instanceOrigin, Quaternion.identity);
+        }
+
+        if(enemy)
+        {
+            Vector3 targetSpawnPos = RandomSpawnPos();
+
             enemy.transform.Rotate(new Vector3(-90, 0, 0));
+            enemy.GetComponent<Enemy>().StartWithASpawnAnim();
+            enemy.GetComponent<Enemy>().SetTargetSpawnPosition(targetSpawnPos);
 
             m_EnemyCount++;
         }
@@ -143,7 +198,7 @@ public class EnemiesManager : MonoBehaviour
 
         Vector3 shapePos = RandomSpawnPos(WaveShape.m_MinSpawnOffset, WaveShape.m_MaxSpawnOffset);
 
-        bool bonus = Random.Range(0f, 1f) < 0.5;
+        bool bonus = Random.Range(0f, 1f) < 0.5f;
         int bonusPos = -1;
 
         if(bonus)
@@ -156,16 +211,32 @@ public class EnemiesManager : MonoBehaviour
         {
             if (WaveShapeItem.m_EnemyInstance)
             {
-                Vector3 itemPose = shapePos + new Vector3(WaveShapeItem.m_RelativePosition.x, WaveShapeItem.m_RelativePosition.y, 0.0f);
-                GameObject enemy = Instantiate(WaveShapeItem.m_EnemyInstance, itemPose, Quaternion.identity);
-                enemy.transform.Rotate(new Vector3(-90, 0, 0));
+                GameObject enemy = null;
 
-                if (bonusPos == pos)
+                if (WaveShapeItem.m_EnemyInstance == m_EnemyInstance)
                 {
-                    enemy.GetComponent<Enemy>().SetSpawnBonus(true);
+                    enemy = Instantiate(WaveShapeItem.m_EnemyInstance, m_GingerBreadSpawnPoints[Random.Range(0, m_GingerBreadSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
+                else if (WaveShapeItem.m_EnemyInstance == m_EnemyFastInstance)
+                {
+                    enemy = Instantiate(WaveShapeItem.m_EnemyInstance, m_CookieSpawnPoints[Random.Range(0, m_CookieSpawnPoints.Length)].transform.position, Quaternion.identity);
                 }
 
-                m_EnemyCount++;
+                if (enemy)
+                {
+                    Vector3 itemPose = shapePos + new Vector3(WaveShapeItem.m_RelativePosition.x, WaveShapeItem.m_RelativePosition.y, 0.0f);
+
+                    enemy.transform.Rotate(new Vector3(-90, 0, 0));
+                    enemy.GetComponent<Enemy>().StartWithASpawnAnim();
+                    enemy.GetComponent<Enemy>().SetTargetSpawnPosition(itemPose);
+
+                    if (bonusPos == pos)
+                    {
+                        enemy.GetComponent<Enemy>().SetSpawnBonus(true);
+                    }
+
+                    m_EnemyCount++;
+                }
             }
 
             pos++;
@@ -207,17 +278,35 @@ public class EnemiesManager : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                GameObject NewEnemy = Instantiate((i % 2 == 0 ? m_KillerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
-                NewEnemy.transform.Rotate(new Vector3(-90, 0, 0));
+                GameObject instanceToSpawn = (i % 2 == 0 ? m_KillerEnemyInstance : m_EnemyInstance);
+                
+                GameObject enemy = null;
 
-                Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
+                if (instanceToSpawn == m_EnemyInstance)
+                {
+                    enemy = Instantiate(instanceToSpawn, m_GingerBreadSpawnPoints[Random.Range(0, m_GingerBreadSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
+                else if (instanceToSpawn == m_KillerEnemyInstance)
+                {
+                    enemy = Instantiate(instanceToSpawn, m_CupcakeSpawnPoints[Random.Range(0, m_CupcakeSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
 
-                NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
-                NewEnemyScript.SetEnemySpeed(1.0f);
-                NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
-                NewEnemyScript.SetRotationRadius(1.8f);
+                if (enemy)
+                {
+                    enemy.transform.Rotate(new Vector3(-90, 0, 0));
 
-                m_EnemyCount++;
+                    Enemy NewEnemyScript = enemy.GetComponent<Enemy>();
+
+                    NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
+                    NewEnemyScript.SetEnemySpeed(1.0f);
+                    NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
+                    NewEnemyScript.SetRotationRadius(2.2f);
+
+                    NewEnemyScript.StartWithASpawnAnim();
+                    NewEnemyScript.SetTargetSpawnPosition(SpawnPos);
+
+                    m_EnemyCount++;
+                }
             }
         }
     }
@@ -243,33 +332,69 @@ public class EnemiesManager : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                GameObject NewEnemy = Instantiate((i % 2 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
-                NewEnemy.transform.Rotate(new Vector3(-90, 0, 0));
+                GameObject instanceToSpawn = (i % 2 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance);
 
-                Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
+                GameObject enemy = null;
 
-                NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
-                NewEnemyScript.SetEnemySpeed(1.0f);
-                NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
-                NewEnemyScript.SetRotationRadius(2.2f);
+                if (instanceToSpawn == m_EnemyInstance)
+                {
+                    enemy = Instantiate(instanceToSpawn, m_GingerBreadSpawnPoints[Random.Range(0, m_GingerBreadSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
+                else if (instanceToSpawn == m_KillerPowerEnemyInstance)
+                {
+                    enemy = Instantiate(instanceToSpawn, m_DonutSpawnPoints[Random.Range(0, m_DonutSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
 
-                m_EnemyCount++;
+                if (enemy)
+                {
+                    enemy.transform.Rotate(new Vector3(-90, 0, 0));
+
+                    Enemy NewEnemyScript = enemy.GetComponent<Enemy>();
+
+                    NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
+                    NewEnemyScript.SetEnemySpeed(1.0f);
+                    NewEnemyScript.SetRotationAngle(Mathf.PI / 2 * i);
+                    NewEnemyScript.SetRotationRadius(2.2f);
+
+                    NewEnemyScript.StartWithASpawnAnim();
+                    NewEnemyScript.SetTargetSpawnPosition(SpawnPos);
+
+                    m_EnemyCount++;
+                }
             }
 
             for (int i = 0; i < 8; i++)
             {
-                GameObject NewEnemy = Instantiate((i % 4 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance), SpawnPos, Quaternion.identity);
-                NewEnemy.transform.Rotate(new Vector3(-90, 0, 0));
+                GameObject instanceToSpawn = (i % 4 == 0 ? m_KillerPowerEnemyInstance : m_EnemyInstance);
 
-                Enemy NewEnemyScript = NewEnemy.GetComponent<Enemy>();
+                GameObject enemy = null;
 
-                NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
-                NewEnemyScript.SetEnemySpeed(1.0f);
-                NewEnemyScript.SetRotationAngle(Mathf.PI / 4 * i);
-                NewEnemyScript.SetRotationRadius(2.7f);
-                NewEnemyScript.SetRotationClockwise(false);
+                if (instanceToSpawn == m_EnemyInstance)
+                {
+                    enemy = Instantiate(instanceToSpawn, m_GingerBreadSpawnPoints[Random.Range(0, m_GingerBreadSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
+                else if (instanceToSpawn == m_KillerPowerEnemyInstance)
+                {
+                    enemy = Instantiate(instanceToSpawn, m_DonutSpawnPoints[Random.Range(0, m_DonutSpawnPoints.Length)].transform.position, Quaternion.identity);
+                }
 
-                m_EnemyCount++;
+                if (enemy)
+                {
+                    enemy.transform.Rotate(new Vector3(-90, 0, 0));
+
+                    Enemy NewEnemyScript = enemy.GetComponent<Enemy>();
+
+                    NewEnemyScript.SetMovmentType(EnemyMovmentType.Circular);
+                    NewEnemyScript.SetEnemySpeed(1.0f);
+                    NewEnemyScript.SetRotationAngle(Mathf.PI / 4 * i);
+                    NewEnemyScript.SetRotationRadius(2.7f);
+
+                    NewEnemyScript.StartWithASpawnAnim();
+                    NewEnemyScript.SetTargetSpawnPosition(SpawnPos);
+                    NewEnemyScript.SetRotationClockwise(false);
+
+                    m_EnemyCount++;
+                }
             }
         }
     }

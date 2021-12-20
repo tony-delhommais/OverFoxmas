@@ -24,32 +24,26 @@ public class EnemyKiller : Enemy
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(m_ShootRate);
+            yield return new WaitForSeconds(1f / m_ShootRate);
 
-            Instantiate(m_EnemyBulletInstance, transform.position, Quaternion.identity);
+            Instantiate(m_EnemyBulletInstance, transform.position + new Vector3(0, 0, Random.Range(-0.2f, 0.2f)), Quaternion.identity);
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    protected override void OnBulletEnter(Collider collider)
     {
-        if (collider.CompareTag("Player"))
+        m_CurrentPV -= (int)(collider.GetComponent<Bullet>().GetBulletDammage());
+
+        if (m_CurrentPV <= 0)
         {
+            collider.GetComponent<Bullet>().EnemyHitIsDead(7);
+
+            if (m_SpawnBonus)
+            {
+                if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+            }
+
             Dispawn();
         }
-        if (collider.CompareTag("Bullet"))
-        {
-            m_CurrentPV -= 10;
-
-            if (m_CurrentPV <= 0)
-            {
-                collider.GetComponent<Bullet>().EnemyHitIsDead(7);
-
-                Dispawn();
-            }
-        }
-        /*if (collider.CompareTag("Enemy"))
-        {
-            DestroySelf();
-        }*/
     }
 }

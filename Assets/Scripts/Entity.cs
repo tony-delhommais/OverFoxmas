@@ -34,7 +34,12 @@ public abstract class Entity : MonoBehaviour
 
     abstract public void Spawn();
 
-    virtual public void Dispawn()
+    virtual protected void Dispawn()
+    {
+        DispawnEntity();
+    }
+
+    protected void DispawnEntity()
     {
         Destroy(gameObject);
     }
