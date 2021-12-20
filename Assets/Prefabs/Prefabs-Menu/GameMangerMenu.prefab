@@ -47,6 +47,9 @@ MonoBehaviour:
   m_SpotMenu: {fileID: 0}
   m_SpotOptions: {fileID: 0}
   m_SpotCredits: {fileID: 0}
+  m_SpotPlay: {fileID: 0}
   m_LookAtSpotMenu: {fileID: 0}
   m_LookAtSpotOptions: {fileID: 0}
   m_LookAtSpotCredits: {fileID: 0}
+  m_LookAtSpotPlay: {fileID: 0}
+  m_TransitionEnd: {fileID: 0}
