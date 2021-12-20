@@ -35,14 +35,23 @@ public class Player : Entity
     public event Action OnHPChange;
     public event Action OnScoreChange;
 
+    [SerializeField]
+    private GameObject m_AnimatorComponent = null;
+
+    private Animator m_Moove = null;
+
     override protected void Awake()
     {
         base.Awake();
         m_MainCamera = Camera.main;
 
         m_Stopwatch = Stopwatch.StartNew();
-    }
 
+        if (m_AnimatorComponent)
+        {
+            m_Moove = m_AnimatorComponent.GetComponent<Animator>();
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -59,12 +68,16 @@ public class Player : Entity
         { 
             if (m_MovingArea)
             {
+                bool haveClick = false;
+
                 //RIGHT
                 if (transform.position.x < m_MovingArea.position.x + (m_MovingArea.localScale.x / 2))
                 {
                     if (Input.GetKey(KeyCode.RightArrow))
                     {
+                        haveClick = true;
                         transform.position += transform.right * Time.deltaTime * m_HorizontalSpeed;
+                        m_Moove.SetInteger("direction", 2);
                     }
                 }
 
@@ -73,7 +86,9 @@ public class Player : Entity
                 {
                     if (Input.GetKey(KeyCode.LeftArrow))
                     {
+                        haveClick = true;
                         transform.position += transform.right * -1 * Time.deltaTime * m_HorizontalSpeed;
+                        m_Moove.SetInteger("direction", 1);
                     }
                 }
 
@@ -82,7 +97,9 @@ public class Player : Entity
                 {
                     if (Input.GetKey(KeyCode.UpArrow))
                     {
+                        haveClick = true;
                         transform.position += transform.up * Time.deltaTime * m_VerticalSpeed;
+                        m_Moove.SetInteger("direction", 3);
                     }
                 }
 
@@ -91,7 +108,23 @@ public class Player : Entity
                 {
                     if (Input.GetKey(KeyCode.DownArrow))
                     {
+                        haveClick = true;
                         transform.position += transform.up * -1 * Time.deltaTime * m_VerticalSpeed;
+                        m_Moove.SetInteger("direction", 4);
+                    }
+                }
+
+                //ANIMATION FOX
+                if (m_Moove)
+                {
+                    if (!haveClick)
+                    {
+                        m_Moove.SetBool("moove", false);
+                        m_Moove.SetInteger("direction", 0);
+                    }
+                    else
+                    {
+                        m_Moove.SetBool("moove", true);
                     }
                 }
             }
