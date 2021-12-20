@@ -5,20 +5,27 @@ using UnityEngine;
 public class MiniBoss : Entity
 {
     [SerializeField]
-    private GameObject m_BonusPrefab = null;
+    protected GameObject m_BonusPrefab = null;
 
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Bullet"))
         {
-            m_CurrentPV -= 5;
+            OnBulletEnter(collider);
+        }
+    }
 
-            if (m_CurrentPV <= 0)
-            {
-                collider.GetComponent<Bullet>().EnemyHitIsDead(20);
+    protected virtual void OnBulletEnter(Collider collider)
+    {
+        m_CurrentPV -= (int)(collider.GetComponent<Bullet>().GetBulletDammage());
 
-                Dispawn();
-            }
+        if (m_CurrentPV <= 0)
+        {
+            collider.GetComponent<Bullet>().EnemyHitIsDead(20);
+
+            if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+
+            Dispawn();
         }
     }
 
@@ -27,12 +34,12 @@ public class MiniBoss : Entity
         //print("Spawn MiniBoss");
     }
 
-    public override void Dispawn()
+    protected override void Dispawn()
     {
         EnemiesManager.Current.MiniBossDead();
 
         if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
 
-        base.Dispawn();
+        DispawnEntity();
     }
 }

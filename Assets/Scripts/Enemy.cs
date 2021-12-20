@@ -30,9 +30,13 @@ public class Enemy : Entity
     private float m_RotationAngle = 0.0f;
 
     [SerializeField]
-    private GameObject m_BonusPrefab = null;
+    protected GameObject m_BonusPrefab = null;
 
-    private bool m_SpawnBonus = false;
+    protected bool m_SpawnBonus = false;
+
+    protected bool m_SpawnAnim = false;
+
+    protected Vector3 m_TargetSpawnPosition = new Vector3(0, 0, 0);
 
     override protected void Awake()
     {
@@ -41,10 +45,59 @@ public class Enemy : Entity
         m_OriginalPos = transform.position;
     }
 
+    float time = 0f;
+
     // Update is called once per frame
     virtual protected void Update()
     {
-        UpdateEnemyPosition();
+        if(!m_SpawnAnim) UpdateEnemyPosition();
+        else
+        {
+            Vector3 TargetSpawnPosR = m_TargetSpawnPosition;
+            if (m_MovmentType == EnemyMovmentType.Circular)
+            {
+                float xPos = Mathf.Sin(m_RotationAngle) * m_RotationRadius;
+                float yPos = Mathf.Cos(m_RotationAngle) * m_RotationRadius;
+
+                TargetSpawnPosR += new Vector3(xPos, yPos, 0);
+            }
+
+            if (Vector3.Distance(transform.position, TargetSpawnPosR) > 0.01)
+            {
+                transform.position = BellLerp(m_OriginalPos, TargetSpawnPosR, Mathf.Clamp(time / 2, 0f, 1f));
+                time += Time.deltaTime;
+            }
+            else
+            {
+                m_SpawnAnim = false;
+
+                m_OriginalPos = m_TargetSpawnPosition;
+            }
+        }
+    }
+
+    private static Vector3 BellLerp(Vector3 a, Vector3 b, float t)
+    {
+        if (t <= 0) return a;
+
+        if (t >= 1) return b;
+
+        float relativ_b_length = Vector3.Scale(b - a, new Vector3(1, 1, 0)).magnitude;
+
+        float f_a = Mathf.Abs((b.z - a.z) / (0.4f * relativ_b_length * relativ_b_length));
+
+        float f_b = -1 * (f_a * relativ_b_length * relativ_b_length + a.z - b.z) / relativ_b_length;
+
+        float f_c = a.z;
+
+        float r_l_pos = relativ_b_length * t;
+
+
+        Vector3 CurrentPos = Vector3.Scale(Vector3.Lerp(a, b, t), new Vector3(1, 1, 0));
+
+        CurrentPos.z = f_a * r_l_pos * r_l_pos + f_b * r_l_pos + f_c;
+
+        return CurrentPos;
     }
 
     /// <summary>
@@ -96,40 +149,89 @@ public class Enemy : Entity
     {
         if (collider.CompareTag("Player"))
         {
-            Dispawn();
+            OnPlayerEnter(collider);
         }
+
         if (collider.CompareTag("Bullet"))
         {
-            m_CurrentPV -= 10;
-
-            if (m_CurrentPV <= 0)
-            {
-                collider.GetComponent<Bullet>().EnemyHitIsDead(5);
-
-                if (m_SpawnBonus)
-                {
-                    if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
-                }
-
-                Dispawn();
-            }
+            OnBulletEnter(collider);
         }
-        /*if (collider.CompareTag("Enemy"))
+    }
+
+    protected virtual void OnPlayerEnter(Collider collider)
+    {
+        Dispawn();
+    }
+
+    protected virtual void OnBulletEnter(Collider collider)
+    {
+        m_CurrentPV -= (int)(collider.GetComponent<Bullet>().GetBulletDammage());
+
+        if (m_CurrentPV <= 0)
         {
-            DestroySelf();
-        }*/
+            collider.GetComponent<Bullet>().EnemyHitIsDead(5);
+
+            if (m_SpawnBonus)
+            {
+                if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+            }
+
+            Dispawn();
+        }
     }
 
     public override void Spawn()
     {
         //print("Spawn Enemy");
+
+        // TODO: Start coroutine pour spawn anim
+
+        if(m_SpawnAnim)
+        {
+            //StartCoroutine(SpawnAnimCoroutine());
+        }
     }
 
-    public override void Dispawn()
+    IEnumerator SpawnAnimCoroutine()
+    {
+        float time = 0f;
+        /*
+        print(Vector3.Distance(m_OriginalPos, m_TargetSpawnPosition));
+        while (Vector3.Distance(m_OriginalPos, m_TargetSpawnPosition) < 0.5)
+        {
+            transform.position = Vector3.Lerp(m_OriginalPos, m_TargetSpawnPosition, Mathf.Clamp(time, 0f, 1f));
+            time += Time.deltaTime;
+        }*/
+        print(Vector3.Distance(transform.position, m_TargetSpawnPosition));
+        while (Vector3.Distance(transform.position, m_TargetSpawnPosition) > 0.01)
+        {
+            //print(Vector3.Distance(transform.position, m_TargetSpawnPosition));
+            transform.position = Vector3.Lerp(m_OriginalPos, m_TargetSpawnPosition, Mathf.Clamp(time / 5, 0f, 1f));
+            time += Time.deltaTime;
+        }
+
+        m_SpawnAnim = false;
+
+        m_OriginalPos = m_TargetSpawnPosition;
+
+        yield return new WaitForSeconds(0);
+    }
+
+    protected override void Dispawn()
     {
         EnemiesManager.Current.DecreaseEnemyCount();
 
-        base.Dispawn();
+        DispawnEntity();
+    }
+
+    public void StartWithASpawnAnim()
+    {
+        m_SpawnAnim = true;
+    }
+
+    public void SetTargetSpawnPosition(Vector3 p_TargetSpawnPosition)
+    {
+        m_TargetSpawnPosition = p_TargetSpawnPosition;
     }
 
     public void SetEnemySpeed(float p_EnemySpeed)

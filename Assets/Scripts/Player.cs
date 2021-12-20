@@ -101,7 +101,7 @@ public class Player : Entity
             {
                 if (m_Stopwatch.Elapsed.TotalSeconds > 1.0 / (float)m_BulletSpawnSpeed)
                 {
-                    Vector3 SpawnPoint = transform.position;
+                    Vector3 SpawnPoint = transform.position + new Vector3(0, 0, UnityEngine.Random.Range(-0.2f, 0.2f));
 
                     GameObject newBullet = Instantiate(m_BulletInstance, SpawnPoint, Quaternion.identity) as GameObject;
                     //abonnement Being Sport
@@ -232,8 +232,8 @@ public class Player : Entity
         //print("Spawn Player");
     }
 
-    public override void Dispawn()
+    protected override void Dispawn()
     {
-        base.Dispawn();
+        DispawnEntity();
     }
 }

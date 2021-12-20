@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : Entity
+public class Boss : MiniBoss
 {
-    [SerializeField]
-    private GameObject m_BonusPrefab = null;
-
     [SerializeField]
     private Transform m_PartOne = null;
     [SerializeField]
@@ -18,20 +15,19 @@ public class Boss : Entity
     [SerializeField]
     private Transform m_PartFive = null;
 
-    private void OnTriggerEnter(Collider collider)
+    protected override void OnBulletEnter(Collider collider)
     {
-        if (collider.CompareTag("Bullet"))
+        m_CurrentPV -= (int)(collider.GetComponent<Bullet>().GetBulletDammage());
+
+        OnHPDecrease();
+
+        if (m_CurrentPV <= 0)
         {
-            m_CurrentPV -= 5;
+            collider.GetComponent<Bullet>().EnemyHitIsDead(50);
 
-            OnHPDecrease();
+            if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
 
-            if (m_CurrentPV <= 0)
-            {
-                collider.GetComponent<Bullet>().EnemyHitIsDead(50);
-
-                Dispawn();
-            }
+            Dispawn();
         }
     }
 
@@ -58,12 +54,12 @@ public class Boss : Entity
         //print("Spawn Boss");
     }
 
-    public override void Dispawn()
+    protected override void Dispawn()
     {
         EnemiesManager.Current.BossDead();
 
         if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
 
-        base.Dispawn();
+        DispawnEntity();
     }
 }

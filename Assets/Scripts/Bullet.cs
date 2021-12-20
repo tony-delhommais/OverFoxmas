@@ -13,6 +13,9 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private float m_BulletSpeed = 2f;
 
+    [SerializeField]
+    private float m_BulletDamage = 5f;
+
     public event Action<int> OnHit;
 
     private bool m_HaveHitWall = false;
@@ -64,6 +67,11 @@ public class Bullet : MonoBehaviour
 
             m_HaveHitWall = true;
         }
+    }
+
+    public float GetBulletDammage()
+    {
+        return m_BulletDamage;
     }
 
     public void EnemyHitIsDead(int p_incScore)

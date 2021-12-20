@@ -8,34 +8,28 @@ public class EnemyKillerPower : EnemyKiller
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(m_ShootRate);
+            yield return new WaitForSeconds(1f / m_ShootRate);
 
-            Instantiate(m_EnemyBulletInstance, transform.position, Quaternion.identity);
-            Instantiate(m_EnemyBulletInstance, transform.position, Quaternion.Euler(0, 0, 45));
-            Instantiate(m_EnemyBulletInstance, transform.position, Quaternion.Euler(0, 0, -45));
+            Instantiate(m_EnemyBulletInstance, transform.position + new Vector3(0, 0, Random.Range(-0.2f, 0.2f)), Quaternion.identity);
+            Instantiate(m_EnemyBulletInstance, transform.position + new Vector3(0, 0, Random.Range(-0.2f, 0.2f)), Quaternion.Euler(0, 0, Random.Range(22.5f, 67.5f)));
+            Instantiate(m_EnemyBulletInstance, transform.position + new Vector3(0, 0, Random.Range(-0.2f, 0.2f)), Quaternion.Euler(0, 0, Random.Range(-22.5f, -67.5f)));
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    protected override void OnBulletEnter(Collider collider)
     {
-        if (collider.CompareTag("Player"))
+        m_CurrentPV -= (int)(collider.GetComponent<Bullet>().GetBulletDammage());
+
+        if (m_CurrentPV <= 0)
         {
+            collider.GetComponent<Bullet>().EnemyHitIsDead(12);
+
+            if (m_SpawnBonus)
+            {
+                if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+            }
+
             Dispawn();
         }
-        if (collider.CompareTag("Bullet"))
-        {
-            m_CurrentPV -= 10;
-
-            if (m_CurrentPV <= 0)
-            {
-                collider.GetComponent<Bullet>().EnemyHitIsDead(12);
-
-                Dispawn();
-            }
-        }
-        /*if (collider.CompareTag("Enemy"))
-        {
-            DestroySelf();
-        }*/
     }
 }
