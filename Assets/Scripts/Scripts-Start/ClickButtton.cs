@@ -9,16 +9,21 @@ public enum ClickAction
     Credits,
     Exit,
     BackMenu,
+    Dance,
 };
+
 public class ClickButtton : MonoBehaviour
 {
     [SerializeField]
     private ClickAction m_Action = ClickAction.Play;
 
+
+    private Animator m_AnimationFox = null;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -32,6 +37,7 @@ public class ClickButtton : MonoBehaviour
         switch(m_Action)
         {
             case (ClickAction.Play):
+                GameManagerStart.Current.GoToSpotPlay();
                 GameManagerStart.Current.LoadGameScene("Game");
                 break;
 
@@ -50,6 +56,20 @@ public class ClickButtton : MonoBehaviour
             case (ClickAction.BackMenu):
                 GameManagerStart.Current.GoToSpotMenu();
                 break;
+
+            case (ClickAction.Dance):
+                m_AnimationFox = GetComponent<Animator>();
+                
+                int choice = m_AnimationFox.GetInteger("dance") + 1; 
+                
+                if (choice > 6)
+                {
+                    choice = 1;
+                }
+                m_AnimationFox.SetInteger("dance", choice);
+
+                break;
         }
     }
+
 }
