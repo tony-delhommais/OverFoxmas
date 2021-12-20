@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8297331124187770012}
   - component: {fileID: 8297331124187770015}
-  - component: {fileID: 8297331124187770008}
   - component: {fileID: 5197023529543285526}
+  - component: {fileID: 8297331124187770008}
   m_Layer: 0
   m_Name: Fox
   m_TagString: Player
