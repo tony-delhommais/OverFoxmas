@@ -22,6 +22,9 @@ public class GameManagerStart : MonoBehaviour
     private Transform m_SpotCredits = null;
 
     [SerializeField]
+    private Transform m_SpotPlay = null;
+
+    [SerializeField]
     private Transform m_LookAtSpotMenu = null;
 
     [SerializeField]
@@ -30,8 +33,14 @@ public class GameManagerStart : MonoBehaviour
     [SerializeField]
     private Transform m_LookAtSpotCredits = null;
 
+    [SerializeField]
+    private Transform m_LookAtSpotPlay = null;
+
     private Transform m_LookFrom = null;
     private Transform m_LookTo = null;
+
+    [SerializeField]
+    private GameObject m_TransitionEnd = null;
 
 
 
@@ -54,6 +63,7 @@ public class GameManagerStart : MonoBehaviour
         /*m_Menu.SetActive(true);
         m_Settings.SetActive(false);
         m_Credit.SetActive(false);*/
+        m_TransitionEnd.SetActive(false);
     }
 
     float timeToWait = 7.0f;
@@ -80,7 +90,19 @@ public class GameManagerStart : MonoBehaviour
 
     public void LoadGameScene(string p_SceneName)
     {
-        if(p_SceneName.Length != 0) SceneManager.LoadScene(p_SceneName);
+        if (p_SceneName.Length != 0)
+        {
+            StartCoroutine(TransitionToPlay(p_SceneName));  
+        }
+    }
+
+    private IEnumerator TransitionToPlay(string p_SceneName)
+    {
+        yield return new WaitForSeconds(3.5f);
+        m_TransitionEnd.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        SceneManager.LoadScene(p_SceneName);
+
     }
 
     /*public void LoadPanelMenu()
@@ -161,5 +183,18 @@ public class GameManagerStart : MonoBehaviour
                 m_CineCam.LookAt = m_LookAtSpotCredits;
             }*/
         }
+    }
+
+    public void GoToSpotPlay()
+    {
+        if (m_CineCam != null && m_SpotPlay != null)
+        {
+            m_CineCam.Follow = m_SpotPlay;
+
+            m_LookFrom = m_CineCam.LookAt.transform;
+            m_LookTo = m_LookAtSpotPlay;
+            timer = 0;
+        }
+
     }
 }

@@ -17,7 +17,8 @@ public class ClickButtton : MonoBehaviour
     [SerializeField]
     private ClickAction m_Action = ClickAction.Play;
 
-    private Animator m_Animation = null;
+
+    private Animator m_AnimationFox = null;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +37,7 @@ public class ClickButtton : MonoBehaviour
         switch(m_Action)
         {
             case (ClickAction.Play):
+                GameManagerStart.Current.GoToSpotPlay();
                 GameManagerStart.Current.LoadGameScene("Game");
                 break;
 
@@ -56,18 +58,18 @@ public class ClickButtton : MonoBehaviour
                 break;
 
             case (ClickAction.Dance):
-                m_Animation = GetComponent<Animator>();
+                m_AnimationFox = GetComponent<Animator>();
                 
-                int choice = m_Animation.GetInteger("dance") + 1; 
+                int choice = m_AnimationFox.GetInteger("dance") + 1; 
                 
                 if (choice > 6)
                 {
                     choice = 1;
                 }
-                m_Animation.SetInteger("dance", choice);
+                m_AnimationFox.SetInteger("dance", choice);
 
                 break;
-
         }
     }
+
 }
