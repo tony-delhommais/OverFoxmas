@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TransitionEnd
       objectReference: {fileID: 0}
+    - target: {fileID: 1330232777372895991, guid: b32e951d82b707f4591e683f1a2873ca, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b32e951d82b707f4591e683f1a2873ca, type: 3}
 --- !u!1001 &1914509865373746691
@@ -595,6 +599,10 @@ PrefabInstance:
     - target: {fileID: 4274944307001118763, guid: 0ef73495678b7b843a316aed5d506119, type: 3}
       propertyPath: m_Name
       value: TransitionStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274944307001118763, guid: 0ef73495678b7b843a316aed5d506119, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4274944307001118766, guid: 0ef73495678b7b843a316aed5d506119, type: 3}
       propertyPath: m_Pivot.x
