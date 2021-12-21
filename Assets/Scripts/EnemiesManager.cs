@@ -85,6 +85,8 @@ public class EnemiesManager : MonoBehaviour
     private int m_EnemyCount = 0;
     private float m_Ratio = 0.1f;
 
+    private bool m_SpawnWaveCoroutineIsRunning = false;
+
     private void Awake()
     {
         Current = this;
@@ -108,37 +110,44 @@ public class EnemiesManager : MonoBehaviour
 
     IEnumerator WaveSpawn()
     {
-        while (Application.isPlaying)
+        if (!m_SpawnWaveCoroutineIsRunning)
         {
-            if (m_CurrentWaveAttackerTypePose == m_WaveAttackStruct.Length)
-                break;
+            m_SpawnWaveCoroutineIsRunning = true;
 
-            yield return new WaitForSeconds(m_TimeBetweenWaves);
-
-            bool BreakForBoss = false;
-
-            if(m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MultipleEnemies)
+            while (Application.isPlaying)
             {
-                for(int i = 0; i < m_CurrentWaveAttackerTypePose + 1; i++)
+                yield return new WaitForSeconds(m_TimeBetweenWaves);
+
+                if (m_CurrentWaveAttackerTypePose >= m_WaveAttackStruct.Length)
+                    break;
+
+                int currentWave = ++m_CurrentWaveAttackerTypePose;
+
+                bool BreakForBoss = false;
+
+                if (m_WaveAttackStruct[currentWave] == WaveAttackerType.MultipleEnemies)
                 {
-                    SpawnRandomWaveStructure();
+                    for (int i = 0; i < currentWave + 1; i++)
+                    {
+                        SpawnRandomWaveStructure();
+                    }
                 }
-            }
-            else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MiniBoss)
-            {
-                SpawnMiniBoss();
-                BreakForBoss = true;
-            }
-            else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.Boss)
-            {
-                SpawnBoss();
-                BreakForBoss = true;
+                else if (m_WaveAttackStruct[currentWave] == WaveAttackerType.MiniBoss)
+                {
+                    SpawnMiniBoss();
+                    BreakForBoss = true;
+                }
+                else if (m_WaveAttackStruct[currentWave] == WaveAttackerType.Boss)
+                {
+                    SpawnBoss();
+                    BreakForBoss = true;
+                }
+
+                if (BreakForBoss)
+                    break;
             }
 
-            m_CurrentWaveAttackerTypePose++;
-
-            if (BreakForBoss)
-                break;
+            m_SpawnWaveCoroutineIsRunning = false;
         }
     }
     
