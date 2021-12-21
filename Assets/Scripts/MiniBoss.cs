@@ -23,7 +23,11 @@ public class MiniBoss : Entity
         {
             collider.GetComponent<Bullet>().EnemyHitIsDead(20);
 
-            if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+            if (m_BonusPrefab)
+            {
+                GameObject bonus = Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
+                bonus.transform.Rotate(new Vector3(-90, 0, 0));
+            }
 
             Dispawn();
         }
@@ -37,8 +41,6 @@ public class MiniBoss : Entity
     protected override void Dispawn()
     {
         EnemiesManager.Current.MiniBossDead();
-
-        if (m_BonusPrefab) Instantiate(m_BonusPrefab, transform.position, Quaternion.identity);
 
         DispawnEntity();
     }

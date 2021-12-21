@@ -26,7 +26,7 @@ public class Player : Entity
 
     private int m_Score = 0;
 
-    private bool m_HaveShield = true;
+    private bool m_HaveShield = false;
 
     private int m_MultiShootValue = 1;
 
@@ -192,21 +192,30 @@ public class Player : Entity
             {
                 case BonusType.Heal:
                     Heal(bonus.m_BonusValue);
+                    UserInterface.Current?.AddBonus(bonus.m_BonusType, bonus.m_BonusValue);
                     break;
                 case BonusType.MultiShoot:
                     if (bonus.m_BonusValue > m_MultiShootValue)
+                    {
                         m_MultiShootValue = bonus.m_BonusValue;
+                        UserInterface.Current?.AddBonus(bonus.m_BonusType, bonus.m_BonusValue);
+                    }
                     break;
                 case BonusType.Shield:
                     m_HaveShield = true;
                     StartCoroutine(ShieldCoroutine(bonus.m_BonusValue));
+                    UserInterface.Current?.AddBonus(bonus.m_BonusType, bonus.m_BonusValue);
                     break;
                 case BonusType.ShootSpeed:
                     if (bonus.m_BonusValue > m_BulletSpawnSpeed)
+                    {
                         m_BulletSpawnSpeed = bonus.m_BonusValue;
+                        UserInterface.Current?.AddBonus(bonus.m_BonusType, bonus.m_BonusValue);
+                    }
                     break;
                 case BonusType.Points:
-                    m_Score += bonus.m_BonusValue;
+                    OnBulletHit(bonus.m_BonusValue);
+                    UserInterface.Current?.AddBonus(bonus.m_BonusType, bonus.m_BonusValue);
                     break;
             }
         }
