@@ -11,6 +11,7 @@ TagManager:
   - Bonus
   - Selectable
   - HitWall
+  - Panneau
   layers:
   - Default
   - TransparentFX

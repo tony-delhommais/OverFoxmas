@@ -19,19 +19,7 @@ public class UserInterface : MonoBehaviour
     private Player m_Player = null;
 
     [SerializeField]
-    private GameObject m_Pause = null;
-
-    [SerializeField]
-    private GameObject m_End = null;
-
-    [SerializeField]
     private Text m_HightScore = null;
-
-    [SerializeField]
-    private GameObject m_PanelEndWin = null;
-
-    [SerializeField]
-    private GameObject m_PanelEndLose = null;
 
 
 
@@ -54,11 +42,7 @@ public class UserInterface : MonoBehaviour
         m_Score.text = "Score : " + m_Player.GetScore();
 
         //Ne pas afficher lors du jeu
-        m_End.SetActive(false);
-        m_Pause.SetActive(false);
         m_HightScore.gameObject.SetActive(false);
-        m_PanelEndWin.SetActive(false);
-        m_PanelEndLose.SetActive(false);
     }
 
     // Update is called once per frame
@@ -75,26 +59,5 @@ public class UserInterface : MonoBehaviour
     private void OnScoreChange()
     {
         m_Score.text = "Score : " + m_Player.GetScore();
-    }
-
-    public void SetPausePanel(bool pause)
-    {
-        m_Pause.SetActive(pause);
-    }
-
-    public void OnGameEnd(bool win)
-    {
-        if (win == true)
-        {
-            m_PanelEndWin.SetActive(true);
-        }
-        else
-        {
-            m_PanelEndLose.SetActive(true);
-        }
-
-        m_End.SetActive(true);
-        m_HightScore.gameObject.SetActive(true);
-        m_HightScore.text = "Hight score : " + SaveData.Current.GetHightScore();
     }
 }
