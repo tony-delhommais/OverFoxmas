@@ -82,9 +82,6 @@ public class EnemiesManager : MonoBehaviour
     [SerializeField]
     private Transform[] m_DonutSpawnPoints = null;
 
-    [SerializeField]
-    private Transform m_BossSpawnPoints = null;
-
     private int m_EnemyCount = 0;
     private float m_Ratio = 0.1f;
 

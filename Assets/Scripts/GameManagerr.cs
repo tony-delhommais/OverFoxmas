@@ -12,25 +12,27 @@ public class GameManagerr : MonoBehaviour
 
     private Player m_Player = null;
 
+    [SerializeField]
+    private GameObject m_PausePanel = null;
+
+    private Animator m_PausePanelAnimator = null;
+
+    [SerializeField]
+    private GameObject m_EndPanel = null;
+
+    private Animator m_EndPanelAnimator = null;
+
     private bool m_pause = false;
 
 
     private void Awake()
     {
         Current = this;
+
         m_Player = m_fox?.GetComponent<Player>();
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        m_PausePanelAnimator = m_PausePanel?.GetComponent<Animator>();
+        m_EndPanelAnimator = m_EndPanel?.GetComponent<Animator>();
     }
 
     static public void ResetLevel()
@@ -38,25 +40,27 @@ public class GameManagerr : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1f;
     }
-    public bool GetPause()
+    public bool IsPaused()
     {
         return m_pause;
     }
     public void TogglePlayPause()
     {
         m_pause = !m_pause;
-        if(UserInterface.Current) UserInterface.Current.SetPausePanel(m_pause);
+
         if (m_pause)
         {
+            m_PausePanelAnimator?.SetBool("pause", true);
             Time.timeScale = 0f;
         }
         else
         {
+            m_PausePanelAnimator?.SetBool("pause", false);
             Time.timeScale = 1f;
         }
     }
 
-    public void ExitGame(string p_SceneName)
+    public void LoadOtherScene(string p_SceneName)
     {
         if (p_SceneName.Length != 0)
         {
@@ -71,15 +75,17 @@ public class GameManagerr : MonoBehaviour
     /// <param name="win">Define if the game is won or lost</param>
     public void EndGame(bool win)
     {
-        if (win && m_Player) m_Player.GameFinished();
+        if (win) m_Player?.GameFinished();
 
         //Set the hight score
-        if (SaveData.Current && m_Player.GetScore() > SaveData.Current.GetHightScore())
+        if (SaveData.Current && m_Player?.GetScore() > SaveData.Current?.GetHightScore())
         {
-            SaveData.Current.SetHightScore(m_Player.GetScore());
+            SaveData.Current?.SetHightScore(m_Player.GetScore());
         }
 
-        if(UserInterface.Current) UserInterface.Current.OnGameEnd(win);
+        //UserInterface.Current?.OnGameEnd(win);
+        m_EndPanel.GetComponent<EndPanel>()?.OnGameEnd(win);
+        m_EndPanelAnimator?.SetBool("finish", true);
     }
 
 }

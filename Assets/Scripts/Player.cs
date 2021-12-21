@@ -32,6 +32,8 @@ public class Player : Entity
 
     private bool m_CanWinPoints = true;
 
+    private bool m_GameFinished = false;
+
     public event Action OnHPChange;
     public event Action OnScoreChange;
 
@@ -56,7 +58,7 @@ public class Player : Entity
     // Update is called once per frame
     void Update()
     {
-        PlayerControl();
+        if(!m_GameFinished) PlayerControl();
     }
 
     /// <summary>
@@ -64,7 +66,7 @@ public class Player : Entity
     /// </summary>
     private void PlayerControl()
     {
-        if (!GameManagerr.Current.GetPause())
+        if (!GameManagerr.Current.IsPaused())
         { 
             if (m_MovingArea)
             {
@@ -166,7 +168,7 @@ public class Player : Entity
         //PAUSE
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameManagerr.Current.TogglePlayPause();
+            GameManagerr.Current?.TogglePlayPause();
         }
     }
 
@@ -219,7 +221,7 @@ public class Player : Entity
 
     private void OnBulletHit(int p_incScore)
     {
-        if (m_CanWinPoints)
+        if (m_CanWinPoints && !m_GameFinished)
         {
             m_Score += p_incScore;
 
@@ -229,7 +231,7 @@ public class Player : Entity
 
     private void DecreaseHP(int p_hp)
     {
-        if (!m_HaveShield)
+        if (!m_HaveShield && !m_GameFinished)
         {
             m_CurrentPV -= p_hp;
             if(OnHPChange != null) OnHPChange();
@@ -256,8 +258,7 @@ public class Player : Entity
 
     public void GameFinished()
     {
-        m_HaveShield = true;
-        m_CanWinPoints = false;
+        m_GameFinished = true;
     }
 
     public override void Spawn()
