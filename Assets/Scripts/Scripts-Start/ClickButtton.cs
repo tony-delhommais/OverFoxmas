@@ -10,6 +10,9 @@ public enum ClickAction
     Exit,
     BackMenu,
     Dance,
+    Resume,
+    Restart,
+    ExitGame,
 };
 
 public class ClickButtton : MonoBehaviour
@@ -20,41 +23,29 @@ public class ClickButtton : MonoBehaviour
 
     private Animator m_AnimationFox = null;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnClick()
     {
         switch(m_Action)
         {
             case (ClickAction.Play):
-                GameManagerStart.Current.GoToSpotPlay();
-                GameManagerStart.Current.LoadGameScene("Game");
+                GameManagerStart.Current?.GoToSpotPlay();
+                GameManagerStart.Current?.LoadGameScene("Game");
                 break;
 
             case (ClickAction.Options):
-                GameManagerStart.Current.GoToSpotOptions();
+                GameManagerStart.Current?.GoToSpotOptions();
                 break;
 
             case (ClickAction.Credits):
-                GameManagerStart.Current.GoToSpotCredits();
+                GameManagerStart.Current?.GoToSpotCredits();
                 break;
 
             case (ClickAction.Exit):
-                GameManagerStart.Current.ExitGame();
+                GameManagerStart.Current?.ExitGame();
                 break;
 
             case (ClickAction.BackMenu):
-                GameManagerStart.Current.GoToSpotMenu();
+                GameManagerStart.Current?.GoToSpotMenu();
                 break;
 
             case (ClickAction.Dance):
@@ -68,6 +59,18 @@ public class ClickButtton : MonoBehaviour
                 }
                 m_AnimationFox.SetInteger("dance", choice);
 
+                break;
+
+            case (ClickAction.Resume):
+                GameManagerr.Current?.TogglePlayPause();
+                break;
+
+            case (ClickAction.Restart):
+                GameManagerr.Current?.LoadOtherScene(""); // TODO: Changer de scene
+                break;
+
+            case (ClickAction.ExitGame):
+                GameManagerr.Current?.LoadOtherScene(""); // TODO: Changer de scene
                 break;
         }
     }

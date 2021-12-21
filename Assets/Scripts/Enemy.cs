@@ -50,7 +50,7 @@ public class Enemy : Entity
     // Update is called once per frame
     virtual protected void Update()
     {
-        if(!m_SpawnAnim) UpdateEnemyPosition();
+        if (!m_SpawnAnim) UpdateEnemyPosition();
         else
         {
             Vector3 TargetSpawnPosR = m_TargetSpawnPosition;

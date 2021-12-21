@@ -35,8 +35,8 @@ public class SelectSigns : MonoBehaviour
             //print(selection.gameObject);
             
             if (selection.CompareTag(selectableTag))
-            { 
-                var selectionRenderer = selection.GetComponent<ClickButtton>();
+            {
+                ClickButtton selectionRenderer = selection.GetComponent<ClickButtton>();
                 selectionRenderer.OnClick();
                 /*if(selectionRenderer != null)
                 {
