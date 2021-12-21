@@ -24,6 +24,11 @@ public class GameManagerr : MonoBehaviour
 
     private bool m_pause = false;
 
+    [SerializeField]
+    private GameObject m_MusicGO = null;
+
+    private AudioSource m_Audio = null;
+
 
     private void Awake()
     {
@@ -33,8 +38,20 @@ public class GameManagerr : MonoBehaviour
 
         m_PausePanelAnimator = m_PausePanel?.GetComponent<Animator>();
         m_EndPanelAnimator = m_EndPanel?.GetComponent<Animator>();
-    }
 
+        if (m_MusicGO)
+        {
+            m_Audio = m_MusicGO.GetComponent<AudioSource>();
+        }
+    }
+    void Start()
+    {
+        if (ClickButtton.m_Musicint == true)
+        {
+            m_Audio.Play();
+        }
+    }
+    
     static public void ResetLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

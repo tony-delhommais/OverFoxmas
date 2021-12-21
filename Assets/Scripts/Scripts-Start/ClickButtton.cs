@@ -10,6 +10,7 @@ public enum ClickAction
     Exit,
     BackMenu,
     Dance,
+    Music,
     Resume,
     Restart,
     ExitGame,
@@ -22,6 +23,10 @@ public class ClickButtton : MonoBehaviour
 
 
     private Animator m_AnimationFox = null;
+
+    private AudioSource m_Piste = null;
+
+    public static bool m_Musicint = true;
 
     public void OnClick()
     {
@@ -58,6 +63,22 @@ public class ClickButtton : MonoBehaviour
                     choice = 1;
                 }
                 m_AnimationFox.SetInteger("dance", choice);
+
+                break;
+
+            case (ClickAction.Music):
+                m_Piste = GetComponent<AudioSource>();
+
+                if (m_Piste.isPlaying == true)
+                {
+                    m_Musicint = false;
+                    m_Piste.Pause();
+                }
+                else
+                {
+                    m_Musicint = true;
+                    m_Piste.Play();
+                }
 
                 break;
 

@@ -294,7 +294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Kenney
+  m_text: 'Kenney.nl
 
     M. Le Renard'
   m_isRightToLeft: 0
