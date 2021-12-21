@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fox: {fileID: 0}
+  m_PausePanel: {fileID: 0}
+  m_EndPanel: {fileID: 0}

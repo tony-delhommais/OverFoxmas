@@ -29,6 +29,9 @@ public class GameManagerr : MonoBehaviour
 
     private AudioSource m_Audio = null;
 
+    [SerializeField]
+    private GameObject m_TransitionFin = null;
+
 
     private void Awake()
     {
@@ -43,6 +46,8 @@ public class GameManagerr : MonoBehaviour
         {
             m_Audio = m_MusicGO.GetComponent<AudioSource>();
         }
+
+        m_TransitionFin?.SetActive(false);
     }
     void Start()
     {
@@ -67,15 +72,24 @@ public class GameManagerr : MonoBehaviour
 
         if (m_pause)
         {
+            m_Audio.volume = 0.1f;
             m_PausePanelAnimator?.SetBool("pause", true);
             Time.timeScale = 0f;
         }
         else
         {
+            m_Audio.volume = 0.3f;
             m_PausePanelAnimator?.SetBool("pause", false);
             Time.timeScale = 1f;
         }
     }
+
+    public void FondueFin()
+    {
+        m_TransitionFin?.SetActive(true);
+    }
+
+
 
     public void LoadOtherScene(string p_SceneName)
     {

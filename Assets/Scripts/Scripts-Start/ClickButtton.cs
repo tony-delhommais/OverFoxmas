@@ -87,11 +87,12 @@ public class ClickButtton : MonoBehaviour
                 break;
 
             case (ClickAction.Restart):
-                GameManagerr.Current?.LoadOtherScene(""); // TODO: Changer de scene
+                GameManagerr.Current?.LoadOtherScene("Game"); // TODO: Changer de scene
                 break;
 
             case (ClickAction.ExitGame):
-                GameManagerr.Current?.LoadOtherScene(""); // TODO: Changer de scene
+                GameManagerr.Current?.FondueFin();
+                GameManagerr.Current?.LoadOtherScene("MenuPrincipal"); // TODO: Changer de scene
                 break;
         }
     }

@@ -121,23 +121,21 @@ public class EnemiesManager : MonoBehaviour
                 if (m_CurrentWaveAttackerTypePose >= m_WaveAttackStruct.Length)
                     break;
 
-                int currentWave = ++m_CurrentWaveAttackerTypePose;
-
                 bool BreakForBoss = false;
 
-                if (m_WaveAttackStruct[currentWave] == WaveAttackerType.MultipleEnemies)
+                if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MultipleEnemies)
                 {
-                    for (int i = 0; i < currentWave + 1; i++)
+                    for (int i = 0; i < m_CurrentWaveAttackerTypePose + 1; i++)
                     {
                         SpawnRandomWaveStructure();
                     }
                 }
-                else if (m_WaveAttackStruct[currentWave] == WaveAttackerType.MiniBoss)
+                else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.MiniBoss)
                 {
                     SpawnMiniBoss();
                     BreakForBoss = true;
                 }
-                else if (m_WaveAttackStruct[currentWave] == WaveAttackerType.Boss)
+                else if (m_WaveAttackStruct[m_CurrentWaveAttackerTypePose] == WaveAttackerType.Boss)
                 {
                     SpawnBoss();
                     BreakForBoss = true;
@@ -145,6 +143,8 @@ public class EnemiesManager : MonoBehaviour
 
                 if (BreakForBoss)
                     break;
+
+                m_CurrentWaveAttackerTypePose++;
             }
 
             m_SpawnWaveCoroutineIsRunning = false;
