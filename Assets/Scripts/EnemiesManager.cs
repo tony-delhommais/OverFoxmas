@@ -141,10 +141,10 @@ public class EnemiesManager : MonoBehaviour
                     BreakForBoss = true;
                 }
 
+                m_CurrentWaveAttackerTypePose++;
+
                 if (BreakForBoss)
                     break;
-
-                m_CurrentWaveAttackerTypePose++;
             }
 
             m_SpawnWaveCoroutineIsRunning = false;

@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
       propertyPath: m_TimeBetweenWaves
-      value: 5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 585353085393865545, guid: 444a240cc594d374c9221c2c8aac0f4d, type: 3}
       propertyPath: m_EnemyFastInstance
